@@ -1,0 +1,35 @@
+diff -u -r ../=httpd-2.2.11/modules/ssl/ssl_util_ocsp.c ./modules/ssl/ssl_util_ocsp.c
+--- ../=httpd-2.2.11/modules/ssl/ssl_util_ocsp.c	2008-12-31 10:05:01.000000000 -0500
++++ ./modules/ssl/ssl_util_ocsp.c	2008-12-31 10:11:06.000000000 -0500
+@@ -74,7 +74,13 @@
+         rv = apr_socket_create(&sd, sa->family, SOCK_STREAM, APR_PROTO_TCP, p);
+         if (rv == APR_SUCCESS) {
+             /* Inherit the default I/O timeout. */
+-            apr_socket_timeout_set(sd, 1 /* c->base_server->timeout */);
++            apr_socket_timeout_set(sd, apr_time_from_sec(3) /* c->base_server->timeout */);
++
++	    /*apr_socket_opt_set(sd, APR_SO_DEBUG, 1);*/
++            ap_log_cerror(APLOG_MARK, APLOG_DEBUG, 0, c,
++                   "querying OCSP responder %s:%d rv=%d",
++                   inet_ntoa(sa->sa.sin.sin_addr),
++                   sa->sa.sin.sin_port, rv);
+ 
+             rv = apr_socket_connect(sd, sa);
+             if (rv == APR_SUCCESS) {
+@@ -134,14 +140,14 @@
+     rv = apr_brigade_split_line(bbout, bbin, APR_BLOCK_READ, 8192);
+     if (rv) {
+         ap_log_cerror(APLOG_MARK, APLOG_ERR, rv, c,
+-                      "failed reading line from OCSP server");
++                      "failed reading split line from OCSP server");
+         return NULL;
+     }
+     
+     rv = apr_brigade_pflatten(bbout, &line, &len, p);
+     if (rv) {
+         ap_log_cerror(APLOG_MARK, APLOG_ERR, rv, c,
+-                      "failed reading line from OCSP server");
++                      "failed reading pflatten line from OCSP server");
+         return NULL;
+     }
+ 

@@ -1,0 +1,33 @@
+
+#use wml::vsi area=title page=home
+
+<title>Community Resources</title>
+
+<h1>
+<a href="tower.html">
+Tower Construction
+</a>
+</h1>
+
+
+
+<div align=left>
+
+This page will document the ongoing process of building the tower discussed
+<a href="WISP-options.html">elsewhere</a>. This one page may well
+morph into multiple pages as the volume of content grows. 
+
+<p>
+<a href="tower-foundation-prep.html">Foundation Planning and Preparation</a>
+<p>
+<a href="tower-foundation-work.html">Tower Excavation and Rod-busting</a>
+<p>
+<a href="tower-foundation-pour.html">Foundation Concrete</a>
+<p>
+<a href="tower-foundation-backfill.html">Foundation Backfill</a>
+<p>
+<a href="tower-wiring.html">Conduit and Cabinets</a>
+<p>
+<a href="tower-delivery.html">Tower Delivery</a>
+
+</div>

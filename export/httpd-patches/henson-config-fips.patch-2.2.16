@@ -1,0 +1,82 @@
+diff -r -u -N ../httpd-2.2.15.orig/modules/ssl/mod_ssl.c ./modules/ssl/mod_ssl.c
+--- ../httpd-2.2.15.orig/modules/ssl/mod_ssl.c	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/mod_ssl.c	2010-03-09 10:29:29.000000000 -0500
+@@ -99,6 +99,11 @@
+     SSL_CMD_SRV(Engine, TAKE1,
+                 "SSL switch for the protocol engine "
+                 "(`on', `off')")
++#ifdef HAVE_FIPS
++    SSL_CMD_SRV(FIPS, FLAG,
++                "Enable FIPS-140 mode "
++                "(`on', `off')")
++#endif
+     SSL_CMD_ALL(CipherSuite, TAKE1,
+                 "Colon-delimited list of permitted SSL Ciphers "
+                 "(`XXX:...:XXX' - see manual)")
+diff -r -u -N ../httpd-2.2.15.orig/modules/ssl/ssl_engine_config.c ./modules/ssl/ssl_engine_config.c
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_engine_config.c	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/ssl_engine_config.c	2010-03-09 10:29:28.000000000 -0500
+@@ -274,6 +274,9 @@
+ 
+     cfgMerge(mc, NULL);
+     cfgMerge(enabled, SSL_ENABLED_UNSET);
++#ifdef HAVE_FIPS
++    cfgMergeBool(fips);
++#endif
+     cfgMergeBool(proxy_enabled);
+     cfgMergeInt(session_cache_timeout);
+     cfgMergeBool(cipher_server_pref);
+@@ -648,6 +651,17 @@
+ 
+     return "Argument must be On, Off, or Optional";
+ }
++#ifdef HAVE_FIPS
++
++const char *ssl_cmd_SSLFIPS(cmd_parms *cmd, void *dcfg, int flag)
++{
++    SSLSrvConfigRec *sc = mySrvConfig(cmd->server);
++
++    sc->fips = flag ? TRUE : FALSE;
++
++    return NULL;
++}
++#endif
+ 
+ const char *ssl_cmd_SSLCipherSuite(cmd_parms *cmd,
+                                    void *dcfg,
+diff -r -u -N ../httpd-2.2.15.orig/modules/ssl/ssl_private.h ./modules/ssl/ssl_private.h
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_private.h	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/ssl_private.h	2010-03-09 10:33:14.000000000 -0500
+@@ -486,6 +486,9 @@
+     BOOL             insecure_reneg;
+     modssl_ctx_t    *server;
+     modssl_ctx_t    *proxy;
++#ifdef HAVE_FIPS
++    BOOL             fips;
++#endif
+     ssl_enabled_t    proxy_ssl_check_peer_expire;
+     ssl_enabled_t    proxy_ssl_check_peer_cn;
+ #ifndef OPENSSL_NO_TLSEXT
+@@ -581,6 +584,8 @@
+ const char *ssl_cmd_SSLOCSPEnable(cmd_parms *cmd, void *dcfg, int flag);
+ const char *ssl_cmd_SSLOCSPResponderNoCertVerify(cmd_parms *cmd, void *dcfg, int flag);
+ 
++const char *ssl_cmd_SSLFIPS(cmd_parms *cmd, void *dcfg, int flag);
++
+ /**  module initialization  */
+ int          ssl_init_Module(apr_pool_t *, apr_pool_t *, apr_pool_t *, server_rec *);
+ void         ssl_init_Engine(server_rec *, apr_pool_t *);
+diff -r -u -N ../httpd-2.2.15.orig/modules/ssl/ssl_toolkit_compat.h ./modules/ssl/ssl_toolkit_compat.h
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_toolkit_compat.h	2010-03-09 09:30:12.000000000 -0500
++++ ./modules/ssl/ssl_toolkit_compat.h	2010-03-09 10:29:29.000000000 -0500
+@@ -110,6 +110,10 @@
+ # define MODSSL_D2I_X509_CONST
+ #endif
+ 
++#if (OPENSSL_VERSION_NUMBER >= 0x009080a0) && defined(OPENSSL_FIPS)
++#define HAVE_FIPS
++#endif
++
+ #if (OPENSSL_VERSION_NUMBER >= 0x00909000)
+ # define MODSSL_SSL_METHOD_CONST const
+ #else

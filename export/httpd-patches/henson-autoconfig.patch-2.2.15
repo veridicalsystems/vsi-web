@@ -1,0 +1,165 @@
+diff -r -u ../httpd-2.2.15.orig/modules/ssl/mod_ssl.c ./modules/ssl/mod_ssl.c
+--- ../httpd-2.2.15.orig/modules/ssl/mod_ssl.c	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/mod_ssl.c	2010-03-09 09:41:05.000000000 -0500
+@@ -89,6 +89,16 @@
+                 "SSL external Crypto Device usage "
+                 "(`builtin', `...')")
+ #endif
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++    SSL_CMD_SRV(OPENSSLconfig, FLAG,
++                "OpenSSL autoconfig enable"
++                "(`on', `off')")
++    SSL_CMD_SRV(OPENSSLconfigfile, TAKE1,
++                "OpenSSL autoconfig file name"
++                "(`/path/to/file.cnf' - OpenSSL configuration file")
++    SSL_CMD_SRV(OPENSSLconfigsection, TAKE1,
++                "OpenSSL autoconfig section name")
++#endif
+     SSL_CMD_SRV(RandomSeed, TAKE23,
+                 "SSL Pseudo Random Number Generator (PRNG) seeding source "
+                 "(`startup|connect builtin|file:/path|exec:/path [bytes]')")
+diff -r -u ../httpd-2.2.15.orig/modules/ssl/ssl_engine_config.c ./modules/ssl/ssl_engine_config.c
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_engine_config.c	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/ssl_engine_config.c	2010-03-09 09:41:05.000000000 -0500
+@@ -76,6 +76,12 @@
+     mc->szCryptoDevice         = NULL;
+ #endif
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++    mc->OPENSSLconfig          = FALSE;
++    mc->OPENSSLconfigfile      = NULL;
++    mc->OPENSSLconfigsection   = NULL;
++#endif
++
+     memset(mc->pTmpKeys, 0, sizeof(mc->pTmpKeys));
+ 
+     apr_pool_userdata_set(mc, SSL_MOD_CONFIG_KEY,
+@@ -693,6 +699,59 @@
+ 
+ }
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++const char *ssl_cmd_SSLOPENSSLconfig(cmd_parms *cmd, void *dcfg, int flag)
++{
++    SSLModConfigRec *mc = myModConfig(cmd->server);
++    const char *err;
++
++    if ((err = ap_check_cmd_context(cmd, GLOBAL_ONLY))) {
++        return err;
++    }
++
++    mc->OPENSSLconfig = flag ? TRUE : FALSE;
++
++    return NULL;
++}
++
++const char *ssl_cmd_SSLOPENSSLconfigfile(cmd_parms *cmd,
++                                         void *dcfg,
++                                         const char *arg)
++{
++    SSLModConfigRec *mc = myModConfig(cmd->server);
++    const char *err;
++
++    if ((err = ap_check_cmd_context(cmd, GLOBAL_ONLY))) {
++        return err;
++    }
++
++    if ((err = ssl_cmd_check_file(cmd, &arg))) {
++        return err;
++    }
++
++    mc->OPENSSLconfigfile = arg;
++
++    return NULL;
++}
++
++const char *ssl_cmd_SSLOPENSSLconfigsection(cmd_parms *cmd,
++                                            void *dcfg,
++                                            const char *arg)
++{
++    SSLModConfigRec *mc = myModConfig(cmd->server);
++    const char *err;
++
++    if ((err = ap_check_cmd_context(cmd, GLOBAL_ONLY))) {
++        return err;
++    }
++
++    mc->OPENSSLconfigsection = arg;
++
++    return NULL;
++}
++
++#endif
++
+ const char *ssl_cmd_SSLHonorCipherOrder(cmd_parms *cmd, void *dcfg, int flag)
+ {
+ #ifdef SSL_OP_CIPHER_SERVER_PREFERENCE
+diff -r -u ../httpd-2.2.15.orig/modules/ssl/ssl_engine_init.c ./modules/ssl/ssl_engine_init.c
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_engine_init.c	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/ssl_engine_init.c	2010-03-09 09:41:05.000000000 -0500
+@@ -214,6 +214,13 @@
+     ssl_util_thread_setup(p);
+ #endif
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++    /* 
++     * OpenSSL auto configuration support
++     */
++    ssl_openssl_config(base_server, p);
++#endif
++
+     /*
+      * SSL external crypto device ("engine") support
+      */
+@@ -291,6 +298,24 @@
+     return OK;
+ }
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++void ssl_openssl_config(server_rec *s, apr_pool_t *p)
++{
++    SSLModConfigRec *mc = myModConfig(s);
++    if (mc->OPENSSLconfig == TRUE) {
++        if (CONF_modules_load_file(mc->OPENSSLconfigfile,
++                                   mc->OPENSSLconfigsection ?
++                                   mc->OPENSSLconfigsection :
++                                   "apache_conf", 0) <= 0) {
++            ap_log_error(APLOG_MARK, APLOG_ERR, 0, s,
++                         "Init: Failed to configure OpenSSL");
++            ssl_log_ssl_error(APLOG_MARK, APLOG_ERR, s);
++            ssl_die();
++        }
++    }
++}
++#endif
++
+ /*
+  * Support for external a Crypto Device ("engine"), usually
+  * a hardware accellerator card for crypto operations.
+diff -r -u ../httpd-2.2.15.orig/modules/ssl/ssl_private.h ./modules/ssl/ssl_private.h
+--- ../httpd-2.2.15.orig/modules/ssl/ssl_private.h	2010-03-09 09:30:13.000000000 -0500
++++ ./modules/ssl/ssl_private.h	2010-03-09 09:41:05.000000000 -0500
+@@ -395,6 +395,13 @@
+ #if defined(HAVE_OPENSSL_ENGINE_H) && defined(HAVE_ENGINE_INIT)
+     const char     *szCryptoDevice;
+ #endif
++#if OPENSSL_VERSION_NUMBER >= 0x00907001
++    /** OpenSSL auto config support */
++    BOOL        OPENSSLconfig;
++    const char *OPENSSLconfigfile;
++    const char *OPENSSLconfigsection;
++#endif
++
+     struct {
+         void *pV1, *pV2, *pV3, *pV4, *pV5, *pV6, *pV7, *pV8, *pV9, *pV10;
+     } rCtx;
+@@ -536,6 +543,9 @@
+ const char  *ssl_cmd_SSLCryptoDevice(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLRandomSeed(cmd_parms *, void *, const char *, const char *, const char *);
+ const char  *ssl_cmd_SSLEngine(cmd_parms *, void *, const char *);
++const char  *ssl_cmd_SSLOPENSSLconfig(cmd_parms *, void *, int);
++const char  *ssl_cmd_SSLOPENSSLconfigfile(cmd_parms *, void *, const char *);
++const char  *ssl_cmd_SSLOPENSSLconfigsection(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCipherSuite(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCertificateFile(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCertificateKeyFile(cmd_parms *, void *, const char *);

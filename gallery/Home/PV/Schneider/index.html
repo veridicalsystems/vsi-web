@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Veridical Systems, Inc.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="resource-type" content="document">
+  <meta name="description" content="Veridical Systems home page">
+  <meta name="keywords" content="VSI">
+  <meta name="distribution" content="global">
+  <meta name="copyright" content="Copyright 2010 by VSI">
+</head>
+<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" text="#000000" bgcolor="#ffffff">
+<table height="100%" width="100%" border="0" cellpadding="1" cellspacing="0" summary="">
+<tbody>
+  <tr>
+    <td rowspan="2" valign="top" bgcolor="#b0b0b0">
+      <br>
+      <b><big><a href="/">Home</a></big></b><br>
+      <p><hr></p>
+      <b><big>About VSI</big></b><br>
+      &nbsp;<a href="/what.html">What&nbsp;We&nbsp;Do</a><br>
+      &nbsp;<a href="/who.html">Who&nbsp;We&nbsp;Are</a><br>
+      &nbsp;<a href="/contact.html">Contact&nbsp;Info</a>
+      <p><hr></p>
+      <b><big>Resources</big></b><br>
+      &nbsp;<a href="/blog/">Blog</a><br>
+      &nbsp;<a href="/data/">Data&nbsp;Archives</a>
+      &nbsp;<a href="/export/">Export</a>
+      <p><br></p>
+    </td>
+    <td rowspan="2" bgcolor="#7f7f7f"><font size="1">&nbsp;</font>
+    </td>
+    <td valign="top" bgcolor="#ffffff"><div align="center">
+	
+<title>Schneider/Xantrex Problems</title>
+<h1>
+<a href="index.html">
+Adventures in Schneider/Xantrex Diagnostics
+</a>
+</h1>
+<div align="left">
+Since troubleshooting the Schneider/Xantrex equipment is turning out to be
+an extended and significant effort, I'm collecting information here for ready access.
+Open issues are shown first.
+<h2>
+Open Issues
+</h2>
+<h3>XW6848 Inverter F63 Faults (January 2015 - present)</h3>
+Schneider Case Numbers 16450612, 16875454
+<p>
+With the addition of a diesel generator and (finally) autostart control, I decided to add some
+additional loads to the XW+6848 inverter. That was done in the form of a "Desirable Loads
+subPanel" (DLP), a sub-panel of the original critical loads panel (CLP) with a contactor
+upstream of the main breaker. An automatic load management scheme was also designed and
+implemented, so that only one of the three biggest loads (well pump, ground sourced heat pump,
+hot water heat pump) could be active at the same time.
+<p>
+But, we starting experiencing F63 faults (AC Overload), something that had never occurred before
+with the original XW6048. The F63 fault is nasty because the XW+6848 cuts all power to the CLP
+(and of course DLP) with no or minimal warning (the start of the beeping and the loss of power
+are simultaneous). We had grown rather spoiled by the way the
+original XW6048 had seamlessly tolerated utility glitches.
+I was too busy to worry about the first F63 incidents, and didn't have any
+instrumentation to quantify the loads and initally assumed that, in spite of careful calculations
+and measurements, the loads were in fact excessive. The F63 fault incidents would typically
+occur in conjunction with the many frequent short utility outages experienced here, one or more
+outages of a second or two from utility automatic recloser trips.
+<p>So first I implemented the automatic load management to prevent the well pump (which had been
+on the critical loads panel all along) from running at the same time as the biggest loads on the
+DLP, the upstairs heat pump and the hot water heat pump. We still continued to experience F63 faults,
+even though a logging data meter (Fluke 287) never recorded loads in excess of the 28A
+nominal capacity of the XW+6848. That's excepting the inrush current of the well pump, of course,
+which is on the order of 40A for less than 400ms.
+<p>
+Next was wiring a failsafe cutout for the entire DLP; so that when neither grid nor generator
+power are present the DLP contactor opens and the entire DLP is dead. <em>Still</em> we experienced F63 faults; clearly
+something is wrong as the CLP proper now has lower loads than for the nearly two years of successful
+operation with the original XW6048 (note several CLP circuits were moved to the new DLP).
+<p>
+But, there was still the nagging question of what the loads were on a cycle-by-cycle basis, as
+the Fluke 287 logs transitions between different voltage levels and not waveforms. So, we
+acquired a power quality analyzer (Dranetz 658) capable of logging the load in detail (four
+channels with waveform capture on all four channels).
+<p>
+The gory details of the F63 diagnosis ordeal from this point on can be found
+<a href="../Schneider/F63/index.html">here</a>.
+<p>
+<h3>AGS (August 2014 - present)</h3>
+Schneider Case Numbers 13718734, 13787391, 13428287, 13969583, 15570921
+<p>
+In 2014 I spent months -- and mandays -- trying to figure out why the AGS (Automatic
+Generator Start) module would randomly (and inappropriately) start the diesel generator. Eventually
+Schneider tech support determined the AGS firmware was defective. Last I heard the firmware
+upgrade is due in mid-2015. The gory details of that ordeal can be found
+<a href="../AGS/index.html">here</a>
+<p>
+Note that during the extended process of diagnosing the AGS issues, Schneider supplied a
+new XW+6848 hybrid inverter under warranty to replace the original XW6048. That turned out not to
+be the cause of the AGS issues. Later (early 2015) it appears that replacement may have introduced
+new problems (see next section).
+<p>
+I gave up on the Xantrex AGS and now use a Pentrametric State of Charge (SoC) meter for generator auto-start;
+no more false starts. If and when new firmware is available I will probably give it a try, but if
+it's not rock solid reliable I'll stick with the Pentametric (the AGS false starts were abusing my
+expensive diesel generator). On paper the AGS supports load based autostarts, whereas the Pentametric
+only starts based on low battery SoC. That is a desirable feature that never worked in practice
+so we'll see how the new firmware works.
+<h3>Troubleshooting Notes</h3>
+In fairness to Schneider/Xantrex the XW6048/XW+6848 inverter and AGS module are complex devices and they have
+been generally responsive in talking to me on the phone and via E-mail. Some of our troubleshooting sessions
+have taken the better part of an hour and they're still talking to me. In the hope that we may yet succeed
+in figuring out and correcting the various problems I offer the following thoughts:
+<ul>
+<li> I will cheerfully configure any logging the Combox is capable of.
+<p>
+<li> I have a logging multimeter (Fluke 287) which can do detailed logging of any one parameter of
+	interest (e.g. voltage, current) for periods of up to several days. Since the failure events (AGS false
+	starts, F63 faults, etc.) don't happen predictably or every day it may take awhile to capture the data of interest.
+<p>
+<li> I have a PQ analyzer (Dranetz 658) and will supply graphs and waveforms as relevant or as requested.
+	This device can monitor up to four channels of voltage or current and capture the waveforms on all
+	four channels when programmable out-of-bounds events occur on any channel. It can log for months at a time, but consumes
+	100W of power when in operation, and generally requires that the subpanel covers be removed.
+<P>
+<li> I can configure direct access to the Combox by Schneider/Xantrex personnel. I'll need the source IP address to
+	forward inbound connections through the firewalls.
+<p>
+<li> The XW+6848/battery/generator installation supports an office and business that generates the revenue
+	needed to pay for that expensive equipment. This office also supports servers accessed 7x24x365 from around the
+	world. Reliable operation of this office and servers was the reason for the purchase and
+	installation of the Schneider/Xantrex equipment in the first place. We're happy to do whatever is
+	truly necessary to debug these very disruptive failures, but please keep in mind that any such experimentation
+	can have a very adverse impact on the operation of this business.
+</ul>
+What I don't want to do is reflexively "reset to factory defaults". I've been asked to do that multiple times now.
+The very detailed <a href="xantrex.txt">configuration</a> must be painstakingly typed in manually, a process
+that takes about twenty minutes during which time the critical loads are without power. I can accept an occasional
+mysterious glitch in heavily computerized hardware, but such a "hard reboot" is a last resort
+intervention that is not acceptable on a routine basis.
+<p>
+<p>
+<h2>Closed Issues</h2>
+TBD, no closed issues yet.
+</div>
+	</td>
+  </tr>
+  <tr>
+    <td valign="bottom" bgcolor="#ffffff">
+      <table width="100%" border="0" summary="">
+	<tbody>
+          <tr>
+            <td>
+              <hr>
+              <small>
+              <em>This site Copyright &#169; 2002-2016 VSI.</em>
+              </small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</table>
+</body>
+</html>
+

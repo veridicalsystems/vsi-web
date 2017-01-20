@@ -1,0 +1,49 @@
+--- modules/ssl/ssl_engine_kernel.c.orig	2010-08-23 09:08:40.000000000 -0400
++++ modules/ssl/ssl_engine_kernel.c	2010-08-23 09:15:48.000000000 -0400
+@@ -1308,7 +1308,7 @@
+     /* Get verify ingredients */
+     int errnum   = X509_STORE_CTX_get_error(ctx);
+     int errdepth = X509_STORE_CTX_get_error_depth(ctx);
+-    int depth, verify;
++    int depth, verify, skip_crl;
+ 
+     /*
+      * Log verification information
+@@ -1353,15 +1353,30 @@
+      * Perform OCSP/CRL-based revocation checks
+      */
+     if (ok) {
+-        if (!(ok = ssl_callback_SSLVerify_CRL(ok, ctx, conn))) {
+-            errnum = X509_STORE_CTX_get_error(ctx);
++	/* First try OCSP, if enabled */
++	skip_crl = FALSE;
++        if (errnum == X509_V_OK && sc->server->ocsp_enabled) {
++            ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, s,
++            	"Performing OCSP query");
++            if (!(ok = modssl_verify_ocsp(ctx, sc, s, conn, conn->pool))) {
++                errnum = X509_STORE_CTX_get_error(ctx);
++	        if (errnum != X509_V_ERR_APPLICATION_VERIFICATION) /* status is not unknown, i.e. revoked */
++			skip_crl = TRUE;
++            } else {
++		skip_crl = TRUE; /* status is good */
++	    }
+         }
+-        
+-        if (ok && errnum == X509_V_OK && sc->server->ocsp_enabled) {
+-            ok = modssl_verify_ocsp(ctx, sc, s, conn, conn->pool);
+-            if (!ok) {
++
++	/* If no or failed OCSP, try CRL files */
++        if (!skip_crl && sc->server->crl) {
++            ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, s,
++            	"Performing CRL lookup");
++	    ok = TRUE;
++	    X509_STORE_CTX_set_error(ctx, X509_V_OK);
++	    errnum = X509_V_OK;
++	    if (!(ok = ssl_callback_SSLVerify_CRL(ok, ctx, conn))) {
+                 errnum = X509_STORE_CTX_get_error(ctx);
+-            }
++	    }
+         }
+     }
+ 

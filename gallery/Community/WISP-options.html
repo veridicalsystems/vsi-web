@@ -1,0 +1,597 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Veridical Systems, Inc.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="resource-type" content="document">
+  <meta name="description" content="Veridical Systems home page">
+  <meta name="keywords" content="VSI">
+  <meta name="distribution" content="global">
+  <meta name="copyright" content="Copyright 2010 by VSI">
+</head>
+<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" text="#000000" bgcolor="#ffffff">
+<table height="100%" width="100%" border="0" cellpadding="1" cellspacing="0" summary="">
+<tbody>
+  <tr>
+    <td rowspan="2" valign="top" bgcolor="#b0b0b0">
+      <br>
+      <b><big><a href="/">Home</a></big></b><br>
+      <p><hr></p>
+      <b><big>About VSI</big></b><br>
+      &nbsp;<a href="/what.html">What&nbsp;We&nbsp;Do</a><br>
+      &nbsp;<a href="/who.html">Who&nbsp;We&nbsp;Are</a><br>
+      &nbsp;<a href="/contact.html">Contact&nbsp;Info</a>
+      <p><hr></p>
+      <b><big>Resources</big></b><br>
+      &nbsp;<a href="/blog/">Blog</a><br>
+      &nbsp;<a href="/data/">Data&nbsp;Archives</a>
+      &nbsp;<a href="/export/">Export</a>
+      <p><br></p>
+    </td>
+    <td rowspan="2" bgcolor="#7f7f7f"><font size="1">&nbsp;</font>
+    </td>
+    <td valign="top" bgcolor="#ffffff"><div align="center">
+	
+<title>Community Resources</title>
+<figure style="float:right">
+    <img src="WISP-Logo.png" alt="logo by Orlando Morales" width="259" height="259">
+    <figcaption><small><em>(logo by Orlando Morales)</em></small></figcaption>
+</figure>
+<h1>
+<a href="index.html">
+Communications
+</a>
+</h1>
+Initial version 2015-06-25, last updated 2015-09-18<br>
+(This is the detailed version, see <a href="WISP-summary.html">WISP-summary.html</a> for an overview)
+<p>WISP Options - commentary by Steve M.
+</p>
+<div align="left">
+<h3>
+Overview
+</h3>
+Internet access in this area has been a challenge, to put it mildly<small><sup><a href="#1">1</a></sup></small>.
+Our best, and in fact only, viable option for Internet access seems to be from WISPs (Wireless Internet Service
+Providers).
+<p>Many of us obtain Internet access from a small local WISP<small><sup><a href="#2">2</a></sup></small> that I
+will refer to as the "incumbent WISP". However, for reasons
+that need not be belabored here that has been less than satisfactory for many of us.
+<p>
+This web page discusses a new possibility.
+<h3>
+The SOHO leased line (T-1)
+</h3>
+I work at home with a bunch of computers, in what is a fairly typical Small Office Home Office (SOHO) configuration
+with all the computing services of a small to medium size commercial office (hosting web, E-mail, telephony services in addition to more
+specialized networking services).
+For the past five years or so I've been leasing a T-1 line. It's slow (~1.5Mbps) but fairly
+reliable<small><sup><a href="#3">3</a></sup></small>. It's also
+rather expensive for such modest bandwidth: $602 per month or $7200.00 per year. Since I work at home and there
+were no other options I just did what had to be done and paid the bills; some $35,000 to date. But, going forward
+I have two concerns. One is that I hope to retire in the next year or three, and that $7,200 annual tab is going
+to loom a lot larger on a retirement income. Also, based on extensive discussions with our LEC (Local Exchange Carrier, Verizon) technicians
+and some research, I'm not sure how much longer the T-1 service (or POTS<small><sup><a href="#4">4</a></sup></small>
+telephone service) will continue to be an option at any price<small><sup><a href="#5">5</a></sup></small>.
+<p>
+So, that led to an extensive search for alternatives. It didn't take long to realize that only wireless connectivity
+was feasible, and that requires adequate proximity or visibility to a WISP "POP" (Point of Presence, i.e. an antenna
+or access point). Such antennas are invariably on towers, and there are a lot of towers in the general
+area.<small><sup><a href="#6">6</a></sup></small> The question then becomes one of which towers are accessible from
+a given location, such as my property at 1829 Mount Ephraim Road.
+<p>
+This spring I hired a local tower services company (the people who install and service towers) to do a "wireless survey". That
+is conventionally done by renting a crane to lift a man with binoculars high in the air. This company was just
+starting to experiment with drones and I was one of their first trials of that new
+technology<small><sup><a href="#7">7</a></sup></small>. The results of that survey showed a clear line of sight
+to an expanse of Mar Lu Ridge to the west, where multiple communications towers are located. A local WISP,
+<a href="http://telegia.com/">Telegia</a>, already has a presence on one of those towers, and confirmed that
+they could provide much higher speed service for a much better price. For instance, their 20Mbps down/10Mbps up
+service for $100 a month would save me $6,000 a year while being an order of magnitude faster.
+<h3>
+The Catch
+</h3>
+There's always a catch of course, and in this case it's that an antenna here has to be at least 130' in the
+air<small><sup><a href="#8">8</a></sup></small> to
+have that clear line of sight to the towers on Mar Lu Ridge. A properly engineered tower that tall isn't cheap;
+it will cost at least $25,000. Still, at a savings of $6,000 a year that cost would be recouped in roughly five
+years.
+<p>
+The WISP, Telegia, proposes a 5GHz antenna for the "backhaul" connection from the tower here to their tower on
+Mar Lu Ridge. That would have no effect on any other neighborhood <a href="https://en.wikipedia.org/wiki/Wi-Fi">Wi-Fi</a>,
+both because of the different frequency
+band and the narrow beamwidth of the parabolic antenna. After researching Telegia's reputation and talking with
+Telegia customers I'm convinced that this 5GHz direct line-of-sight service would be as reliable as the current
+T-1 line.
+<h3>
+A "micro-POP"
+</h3>
+However, Telegia also noted that if they installed a 5GHz link from my tower, they could also use that backhaul
+to provide 2.4GHz Wi-Fi service to the immediate neighborhood, i.e. a "micro-POP". 2.4GHz is the traditional "Wi-Fi"
+frequency band, and
+the standard configuration of three sector or panel antennas in what is called an "ABC" configuration would
+occupy all three independent channels within the 2.4GHz band. That may well conflict with other local Wi-Fi usage,
+in particular current incumbent WISP customers.<small><sup><a href="#9">9</a></sup></small>
+<p>
+Note that any willing WISP could manage a micro-POP<small><sup><a href="#10">10</a></sup></small>;
+it doesn't have to be Telegia and I have no particular
+affiliation or affection for them beyond a favorable impression from some research and our interactions to date.
+Unfortunately (but understandably), I have confirmed that the incumbent WISP has no interest in
+in being the WISP that provides and manages that micro-POP service.
+That leaves Telegia as the WISP of choice for my Wi-Fi service and for the micro-POP.<small><sup><a href="#11">11</a></sup></small>
+<p>
+So, that leaves an open question for the neighborhood. We'll all be better off using the same WISP, but will
+all of the neighbors in near proximity to this tower want to use Telegia as their WISP?
+<h3>
+Frequently Asked Questions
+</h3>
+In this section I'll put questions and answers from discussions with the neighbors.
+<p>
+<p>
+<h4>What service options does Telegia provide?</h4>
+<p>
+Their initial installation cost, for the CPE (Customer Premises Equipment) is $200. Some of you in the very near vicinity
+probably can get a good connection directly from your Wi-Fi client devices (laptops, access points, etc.) and
+may not need any CPE gear (i.e. a radio+antenna unit on your roof or outside wall). Those further away will need the CPE
+radio, just like they have now with the incumbent WISP, but still be only one hop from the micro-POP.
+<tt>
+<ul>
+  <li>$&nbsp;80/month for 10Mbps download x &nbsp;5Mbps upload
+  </li>
+  <li>$100/month for 20Mbps download x 10Mbps upload
+  </li>
+  <li>$130/month for 30Mbps download x 15Mbps upload
+  </li>
+</ul>
+</tt>
+These rates compare favorably to those of the incumbent WISP on a dollars per Mbps basis, though cheaper
+options are offered:
+<tt>
+<ul>
+  <li>$&nbsp;55/month for 2Mbps download x 1&nbsp;&nbsp;Mbps upload
+  </li>
+  <li>$&nbsp;70/month for 3Mbps download x 1.5Mbps upload
+  </li>
+  <li>$&nbsp;85/month for 4Mbps download x 2&nbsp;&nbsp;Mbps upload
+  </li>
+  <li>$100/month for 5Mbps download x 2.5Mbps upload
+  </li>
+</ul>
+</tt>
+Note the $70/month plan (nominally) provides faster speeds that I get for $602/month with the T-1 line; oh
+how I would prefer to be paying only $70 a month!
+<p>
+Personally I plan to sign up for the $100/month service; it will be much faster than the current T-1 and I don't want
+to become spoiled with high bandwidth so close to retirement and a fixed income. Note even higher bandwidths are
+available at higher prices; I could get a lot of bandwidth for the $600/month I'm paying now for narrowband T-1.
+<p>
+<p>
+<h4>Would it make more sense to put this tower somewhere else?</h4>
+<p>
+Quite possibly, and I'd be thrilled if someone else wanted to install a tower that would give me solid
+line-of-sight Wi-Fi service. If anyone's interested I'll be happy to share everything I've learned about
+towers over weeks of in-depth investigation.
+<p>
+But, I suspect I'll be the only one determined (or foolish!) enough to build a suitable tower, for several reasons:
+<ul>
+  <li>
+Cost: towers are expensive; this one will cost $25,000 or so. Some of the local properties have more suitable terrain and
+could get by with a shorter tower, but you're still looking at thousands of dollars.
+  </li><p>
+  <li>
+Permits: in initially inquiring about a permit for a "communications tower" I found that the
+requirements for such are extensive, requiring thousands of dollars in paperwork and a full blown "Special Exception"
+process. But, I had noted that I planned
+to put ham radio antennas on the tower and am a licensed ham radio operator (callsign KB3IHF). The very helpful
+Frederick County <a href="https://frederickcountymd.gov/4710/Building-Permits-Zoning-Certificates">Permits and Inspections</a>
+folks pointed out that permitting for ham radio towers is handled differently<small><sup><a href="#12">12</a></sup></small>
+and that on such a tower Wi-Fi
+antennas are allowed as an "accessory use". On that basis I have obtained a standard permit for a tower that specifically
+allows hosting of a micro-POP (permit #131429). So the applicant for a standard permit for an antenna tower will
+need to have a ham radio license<small><sup><a href="#13">13</a></sup></small>.
+  </li><p>
+  <li>
+Backup power: the proposed micro-POP would require a cabinet at the tower base supplied with 120VAC utility power,
+preferably uninterruptible. This property already has uninterruptible power (a combined PV and battery bank system
+with autostart diesel generator). Absent that power we would lose our internet access and thus (for most of us)
+telephone service<small><sup><a href="#14">14</a></sup></small> during a utility power outage.
+  </li><p>
+  <li>
+<a href="http://www.urbandictionary.com/define.php?term=NIMBY">NIMBY</a>: Who the heck <em>wants</em> a tower in their back yard?
+Not us, and this thing will literally be right in our back yard. The
+tower base will be about 50' from our house, to the north and east, and will be yet another obstacle to mow around. Most
+of the neighbors won't see much of the tower but the top portion that will extend above the treetops, but we'll have
+a close-up view of the whole thing from our house. The tower will also require periodic maintenance (occasional inspections
+for corrosion and replacement of coax cable that eventually deterioriates in the weather).
+  </li><p>
+  <li>
+Risk (of superfluousness): there is the possibility, however slim, that some other viable means of Internet access could become available
+before the investment in the tower could be offset by other savings (five years in my case). I don't think that's likely,
+otherwise I'd not be pursuing this option, and in any event I'll still have a first rate ham radio tower as a consolation. But if
+Comcast or Verizon or whomever brings decent broadband down Mount Ephraim Road a year after the tower is up it won't
+look like a very good investment.
+  </li><p>
+Risk (of futility): My expectation that the 5GHz line-of-site link to the Telegia POP on Mar Lu Ridge will provide high
+quality Internet access may be wrong, or the WISP service may prove inadequate for other reasons, and I may be unable to find
+another suitable service. I'm confident enough with my performance expectations to gamble a large investment, but still
+recognize it as a risk.
+</ul>
+<p>
+<p>
+<h4>Will we have better service than now?</h4>
+That's hard to say in general. Those half dozen or so houses that will have direct line of sight to the WISP
+antennas on the new tower will definitely see better performance. I think we'll find another half dozen will have only
+minimal obstructions and a solid signal. The 2.4GHz Wi-Fi signals degrade rapidly
+when obstructed with foliage, which in this area is a major problem. Telegia claims that the micro-POP should
+be usable for anyone within a mile radius of the tower<small><sup><a href="#15">15</a></sup></small>,
+and they have visited the site and seen the area from the top of our current 60' tower. For those without clear line-of-sight
+visibility we won't know for sure until the new antennas are operational. However, those far enough away from
+the tower for that micro-POP to be marginal or unusable will also see correspondingly less interference to their current
+incumbent WISP service.
+<p>
+<p>
+<a name="elsewhere">
+<h4>What do you (the Marquesses) get out of a micro-POP?</h4>
+</a>
+There are pros and cons for us. On the pro side:
+<ul>
+  <li> It's traditional for a WISP to provide discounted service to the owner of a site used for a micro-POP,
+so we might save on the $100 monthly cost of our service. However, Telegia has made it clear they consider a
+micro-POP of only a dozen or so customers economically marginal so that is far from guaranteed. We are
+cost-justifying construction of the tower on the basis of the T-1 savings and not assuming any rebate on our
+monthly Wi-Fi cost.
+  </li><p>
+  <li> We'd have the satisfaction of providing our neighbors with a better opportunity for internet access. I know
+we're not the only ones dissatisfied with the status quo.
+  </li><p>
+</ul>
+On the con side:
+<ul>
+  <li>
+The three antennas that would be needed for this "micro-POP" service collectively add up to a significant portion of
+the total wind load on the tower. That tower is custom designed for the site and specific antenna load, and the
+cost is a direct function of that load; the 2.4GHz "micro-POP" antennas increase the cost by a grand or
+two<small><sup><a href="#16">16</a></sup></small> over the
+cost of a tower sized to support only the 5GHz antenna needed for our Wi-Fi service.
+  </li><p>
+  <li>
+With just a 5GHz antenna providing us service our neighbors will be unaffected by any changes we make, from switching
+to another WISP to decommissioning the tower entirely. But, once a micro-POP is operational we're effectively stuck
+with it. Suppose, for instance, we find a better deal for us with another WISP; if we switch the backhaul link to
+that WISP then the micro-POP has to switch with it<small><sup><a href="#17">17</a></sup></small>. A better deal for
+us won't necessarily be a better deal for the micro-POP customers.
+  </li><p>
+  <li>
+Coordinating with the entire neighborhood and Telegia for a micro-POP is going to take time. Now that we have a permit
+and a clear understanding of what's involved in building a tower we have a financial incentive to replace our T-1
+service with Telegia Wi-Fi sooner rather than later.<small><sup><a href="#18">18</a></sup></small>
+  </li><p>
+  <li>
+No good deed goes unpunished:
+we may be blamed if anyone ends up with worse service than before, or if anything at all goes wrong anywhere, or just
+because. On the other hand, if we put up this tower to get high quality internet access for ourselves
+and <em>didn't</em> host a micro-POP for a WISP willing to provide it we could be blamed for that too ... it's a
+bit of a lose-lose situation so we'll try to do the right thing even if that means more complications.
+  </li><p>
+</ul>
+Note incidentally that we will have no part of managing the micro-POP; that will be entirely the responsibility of
+the WISP and any neighbor who chooses to become a customer will deal directly with that WISP (we won't even know who
+those customers are unless they tell us). A WISP necessarily incurs multiple obligations in that capacity, such
+as responsibility for what their customers do with their Internet access (DMCA take-downs, legal service, NSLs, and
+so forth). We will very deliberately have no involvement beyond hosting the WISP managed antennas on our tower.
+<p>
+<p>
+<a name="who">
+<h4>So Who Exactly Will Be In Range?</h4>
+</a>
+Good question. Using <a href="https://www.google.com/maps">Google</a> terrain maps and the Maryland
+<a href="http://sdat.resiusa.org/RealProperty/Pages/default.aspx">Real Property</a> database I've come up
+with the following list of properties that are close enough to <em>probably</em> have solid connectivity. Here I've taken the
+address and owner designations for occupied properties as shown in the SDAT records:
+<pre>
+<code>
+1721 Mount Ephraim	Lankford, John
+1749 Mount Ephraim	James, Larry
+1803 Mount Ephraim	Carlsson, Per Uno
+1805 Mount Ephraim	Bledsoe, John
+1819 Mount Ephraim	Clement, Diana
+1820 Mount Ephraim	Morrison, Kristen
+1829 Mount Ephraim	Marquess, Steven
+1840 Mount Ephraim	Toof, David
+1846 Mount Ephraim	Danko, David
+1875 Mount Ephraim	Gehman, John
+1888 Mount Ephraim	Lapsa, Tom
+2002 Mount Ephraim	Nicklas, Stephen
+2010 Mount Ephraim	Wilkes, Nathan
+2104 Mount Ephraim	Freedman, Philip
+2116 Mount Ephraim	Harrell, John
+7605 Stewart Hill	Kilgallen, Liliane
+7621 Stewart Hill	Thacker, Robert
+7680 Stewart Hill*	Stonemetz, Lysia
+7380 Ira Sears		Ohlke, Amanda
+
+*maybe, could be obstructed by terrain
+</code>
+</pre>
+All of these properties are in tax map 104 (see
+<a href="http://www.mdp.state.md.us/OurProducts/PropertyMApProducts/FinderOnlineProduct.shtml">
+FinderOnline</a>). Also in tax maps 104 and 110 are the houses on the plateau traversed
+by Ira Sears Road, at least some of which are likely to be within direct range:
+<pre>
+<code>
+7104 IRA SEARS RD	LLOYD MICHAEL WILL
+7106 IRA SEARS RD	SCOTT MICHAEL V DV
+7130 IRA SEARS RD	NIBLOCK THOMAS C &
+7144 IRA SEARS RD	JORDAN RICK M &
+7233 IRA SEARS RD	MACKINTOSH ANDREW
+7303 IRA SEARS RD	SEARS EARL F ETAL
+7386 IRA SEARS RD	BRADFORD WALLACE L
+</code>
+</pre>
+<p>
+We're spread fairly thinly here so this not a long list; that's the essence of the problem
+in getting any Internet service providers to take an interest in this area.
+<p>
+Parts of Parks Mills Road may be in range also, though the beamline angle
+will be pretty low and thus intersected by a lot of foliage.
+<p>
+[update 2016-08015] I've figured out how to use Google Earth to do a
+<a href="http://binaryimpulse.com/2014/06/google-earth-elevation-profiles/">elevation profile</a>
+between the antenna tower and another location. I've also found an interesting Google Earth based
+<a href="http://www.heywhatsthat.com/">service</a> that can generate a
+<a href="heywhatsthat-full.png">coverage map</a> for the areas with line of sight visibility to
+the tower.
+<figure style="float:right">
+    <img src="heywhatsthat-zoom.png" alt="coverage map" width="1170" height="604">
+    <figcaption><small><em>(tower coverage from <a href="http://www.heywhatsthat.com/">http://www.heywhatsthat.com</a>)</em></small></figcaption>
+</figure>
+<p>
+<p>
+<h4>What Level of Interest is Needed for the micro-POP?</h4>
+The tower itself is not dependent on the micro-POP; it's
+already permitted and I'm on to the next stage (getting the geotechnical
+report which alas looks like it will cost several thousand more than I'd
+hoped). This was the original plan; the micro-POP only became a
+consideration when the prospective WISP (Telegia) suggested it.
+<p>
+Some minimal level of community interest is necessary for the micro-POP
+for two reasons; us and Telegia, neither of whom will want to proceed absent
+some significant indication of interest. Telegia claims (correctly I
+believe) that they are not interested in encroaching on the incumbent WISP turf
+for just a handful of customers, and that the micro-POP won't be hugely lucrative for them in any event.
+If they don't think they have a good chance of signing up at least a half dozen customers
+they probably won't be interested in installing the additional hardware
+needed for the micro-POP.
+<p>
+They could of course install the micro-POP antennas at any future point
+in time after the tower is up, but only if that tower has sufficient
+capacity to support them. I will be tempted to avoid that extra cost if
+I'm not reasonably confident there's a point to it.
+<h3>What Happens Next</h3>
+Planning an coordination has taken a long time, but the construction process has started. The geotechnical
+bore samples were taken on September 17. Starting at that point the actual tower construction will be
+documented on a <a href="tower.html">separate web page</a>.
+<p>
+<p>
+</div>
+<hr>
+<div align="center">
+  <small> - Footnotes - </small>
+  <p>
+<div align="left">
+<font size="-1">
+<small>
+<sup>
+<a name="1">1</a>
+</sup>
+</small>
+For a personal perspective see <a href="/blog/life-in-a-digital-ghetto/">Life in a Digital Ghetto</a>.
+<p>
+<small>
+<sup>
+<a name="2">2</a>
+</sup>
+</small>
+At this request of this WISP (personal communication 2015-06-29) I have not named them explicitly. If you're one of the residents
+in this immediate area you will know who they are, and if not the specific identity of this WISP is irrelevant. While I found that
+WISP inadequate for my purposes (I was a customer for a couple of years), they have long provided the only affordable Internet
+access for many of my neighbors.
+<p>
+<small>
+<sup>
+<a name="3">3</a>
+</sup>
+</small>
+We've gone months at a time with no service interruptions. But, during the period June 15 to June 23 we had
+interruptions totaling over 16 hours of complete outage, effectively shutting down the home office here for
+several days. The T-1 line runs through 40,000 feet of overhead cable and two "doublers" (electronic gadgets
+to amplify the signal) to the Verizon Central Office (CO) south of Buckeystown; a
+Wi-Fi link to a WISP will span about the same distance. But, the T-1 cables run through wooded areas
+and are subject to treefalls and evil cable-gnawing squirrels; the Wi-Fi link will traverse only clear air.
+It should be more reliable than the T-1.
+<p>
+<small>
+<sup>
+<a name="4">4</a>
+</sup>
+</small>
+Plain Old Telephone Service, an industry acronym for traditional landline phone service.
+<p>
+<small>
+<sup>
+<a name="5">5</a>
+</sup>
+</small>
+TL;DR: Verizon wants to get out of the residential/consumer wireline business entirely, and is neglecting the wireline ("UTP"
+or "copper", the overhead phone lines running to our homes) infrastructure. This is a well documented objective, see for
+instance
+<a href="https://www.dslreports.com/shownews/Utility-Verizon-To-Exit-Wireline-Business-Within-10-Years-133693">Verizon To Exit Wireline Business Within 10 Years</a>.
+That wireline service won't be shut down immediately once Verizon succeeds in ditching it, but it will go to a "value
+extraction" business like Century Link that is unlikely to extend or improve that service. Rumor has it Century Link wants
+to acquire only the commercial wireline business, and Verizon is insisting that Century Link take over residential service as
+well.
+The T-1 line is a commercial service, but is also the
+only such service in this immediate area and thus will also be vulnerable when the plug is inevitably pulled on the residential
+service that uses the same copper infrastructure.
+<p>
+<small>
+<sup>
+<a name="6">6</a>
+</sup>
+</small>
+Some but not all communications towers are <a href="http://wireless2.fcc.gov/UlsApp/AsrSearch/asrRegistrationSearch.jsp">registered with the FCC</a>.
+<p>
+<small>
+<sup>
+<a name="7">7</a>
+</sup>
+</small>
+Not only was it more fun to see the drone in action, <em>and</em> get digital photos and video, but it also cost me only $500
+instead of a thousand dollars or so for a crane rental. I talked to one crane operator who wasn't even sure he could get his
+crane into the necessary position on our property; I would have had to use another service with an all-terrain crane.
+<p>
+<small>
+<sup>
+<a name="8">8</a>
+</sup>
+</small>
+The fixed tower structure will be 140' tall, with a rotating mast extending an additional 8' higher that will carry
+three ham radio antennas (an HF beam antenna, a UHF/VHF Yagi, and a multi-band vertical). The entire antenna
+structure can be used as an antenna on the 160m band, via a gamma shunt feed. The parabolic Wi-Fi antenna will
+be attached to the fixed tower at a lower height as there needs to be some separation between the different kinds
+of antennas to avoid interference.
+<p>
+<small>
+<sup>
+<a name="9">9</a>
+</sup>
+</small>
+Wi-Fi uses unlicensed radio frequencies, in what is known as the
+<a href="https://en.wikipedia.org/wiki/ISM_band">ISM (Industrial, Scientific, Medical)</a> portion of
+the electromagnetic spectrum. Within the allowed power levels, anyone is allowed to transmit on those
+frequencies and no specific use or users have any exclusivity. There is no legal means for one permitted
+unlicensed user to prevent interference from any other permitted unlicensed use, even if the result is
+that both desired uses are ruined. As a result WISPs tend to operate in de facto territories and try to
+avoid competing in the same geographical location, as a failure to informally coordinate use of that
+unlicensed spectrum leaves everyone worse off.
+<p>
+<small>
+<sup>
+<a name="10">10</a>
+</sup>
+</small>
+Strictly speaking a WISP is not required; Wi-Fi technology isn't rocket science, the hardware is
+pretty affordable, and any enterprising neighbor could lease space on a commercial tower (I talked to a
+couple of tower owners; that's what those towers are for) and manage both ends of the connection. But, that
+neighbor won't be me as I already manage five companies in some capacity; I don't need the headaches of
+another no matter how small.
+<p>
+<small>
+<sup>
+<a name="11">11</a>
+</sup>
+</small>
+Needless to say I'm more than a little leery of putting all my eggs in one basket, especially when that basket is going
+to cost some $25,000. So I did research the possibility of utilizing WISPs other than Telegia or the incumbent WISP.
+I concluded that while it would be preferable to use a nearby local WISP, there are
+other options as a fallback.
+<p>
+<small>
+<sup>
+<a name="12">12</a>
+</sup>
+</small>
+Long story short, federal regulations preempt local restrictions on ham radio antennas
+<a href="https://www.law.cornell.edu/cfr/text/47/97.15">46 CFR 97.15(b)</a>. This is also known as
+<a href="http://www.antennazoning.com/attachments/PRB1_Article.pdf">PRB-1</a>.
+There is a comparable type of exception for windmill towers. But, a windmill would interfere with antennas and would have a
+huge windload that would drive up the cost of the tower substantially.
+<p>
+<small>
+<sup>
+<a name="13">13</a>
+</sup>
+</small>
+One other neighbor is a licensed ham radio operator (it's easy enough to
+<a href="http://wireless2.fcc.gov/UlsApp/UlsSearch/searchLicense.jsp">check</a>). However, that ham's property isn't
+any more promising as a tower site than mine.
+<p>
+<small>
+<sup>
+<a name="14">14</a>
+</sup>
+</small>
+We don't get a usable cell signal inside the house here. I converted all our landlines to VoIP (Voice over IP)
+shortly after getting the
+T-1 line; VoIP is far cheaper (which matters when you have 10 phone numbers like I do) and as reliable. I have
+kept one POTS line for calling <a href="http://www.level3.com/en/">Level 3</a> (our T-1 service provider) when
+the T-1 line goes down. The POTS line tends to fail about as often as the T-1 line, though fortunately not always
+at the same time.
+<p>
+<small>
+<sup>
+<a name="15">15</a>
+</sup>
+</small>
+That's a half-mile radius for a direct link from a CPE radio to the WISP micro-POP antennas. The range could be
+extended further with multiple hops (from micro-POP antenna to one CPE radio to another CPE radio, and so on). But,
+those extra hops inevitably degrade the quality of the Wi-Fi service, as do obstructions (foliage) between any two nodes.
+<p>
+<small>
+<sup>
+<a name="16">16</a>
+</sup>
+</small>
+I don't know the exact cost because that is a function of two factors: the cost of the tower "package" (the above
+ground metal structure)
+and the foundation. The foundation will need thousands of dollars of concrete and fabricated rebar, but I won't have an exact
+design until I commit to purchase of the tower package and pay for the geotechnical soil report. That report alone will cost
+at least $1,500. Only at that point will I have a complete design from which to estimate total tower costs. However, from
+several iterations with <a href="http://www.rohnproducts.com/">Rohn</a> of tentative tower designs I have a
+pretty good feel for how the cost varies, and that is quite
+sensitive to the total EPA ("Effective Projected Area") of the antennas.
+<p>
+<small>
+<sup>
+<a name="17">17</a>
+</sup>
+</small>
+Unless a second backhaul antenna was installed on the tower, one for the old WISP serving the micro-POP and one for
+the new WISP providing us with Wi-Fi service. Depending on the location of the destination tower hosting the new WISP
+coexistence of those antennas may not be possible, and the tower may not be able to accommodate the additional wind
+load. Two full-coverage 2.4GHz micro-Pops would definitely not be able to coexist on the same tower.
+<p>
+<small>
+<sup>
+<a name="18">18</a>
+</sup>
+</small>
+Our T-1 service is under a three year contract that comes up for renewal in December 2016, or $9,000 from
+now. Nominally that contract can't be terminated prematurely, and I'd assumed I'd be stuck with it no matter
+what. However, a well-placed Verizon source recently informed me that because of the high ongoing costs of
+maintaining my T-1 service, I would indeed be allowed to terminate early. So if I move expeditiously to
+build this tower this summer instead of moving leisurely as originally planned I could save another $5-7K.
+<p>
+</font>
+	</td>
+  </tr>
+  <tr>
+    <td valign="bottom" bgcolor="#ffffff">
+      <table width="100%" border="0" summary="">
+	<tbody>
+          <tr>
+            <td>
+              <hr>
+              <small>
+              <em>This site Copyright &#169; 2002-2016 VSI.</em>
+              </small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</table>
+</body>
+</html>
+

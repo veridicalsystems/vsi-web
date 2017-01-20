@@ -1,0 +1,95 @@
+
+#use wml::vsi area=title page=home
+
+<title>PV System Design</title>
+
+<h1>
+<a href="index.html">
+Photo-voltaic Power Generation System
+</a>
+</h1>
+
+<h2>Design Considerations</h2>
+
+
+<div align=left>
+
+<h3>
+Total capacity
+</h3>
+Estimating the "net zero" target for annual power production turned out to be
+challenging due to a <a href="history.html">number of factors</a>. Since overproduction
+of power is undesirable a figure at the low end of the range of plausible values was
+chosen (18,000 KWh/year).
+
+<h3>
+Battery backup capacity
+</h3>
+Batteries are expensive and have a limited lifespan, so we wanted only enough battery
+capacity to meet the design goal powering the critical loads panel overnight (eight hours).
+Assuming a 700W overnight load and a maximum 50% battery discharge that worked out to about
+a nominal 11KWh  battery bank capacity.
+<p>
+Conventional flooded lead-acid batteries have the best combination of performance and value,
+and were carefully considered, but AGM batteries were ultimately chosen for the peace of
+mind of some of the occupants.
+<p>
+Hybrid inverters capable of maintaining the battery bank and powering the critical loads
+panel are only available in specific discrete sizes, with about 6KW being the maximum for
+a single 120/240V inverter. Higher wattages require "stacking" multiple inverters (wiring
+and configuring them to provide in-phase power in parallel). Stacking two inverters more than
+doubles the cost, of course, so we elected to use a single 6KW inverter (Xantrex XW 6068).
+Stacked SMA "Sunny Island" inverters would have been technically optimal, but were
+cost-prohibitive. Two relative disadvantages of the Xantrex are less capable
+<a href="frequency.html">frequency drooping</a> and the need for a different proprietary
+remote management panel, one that unfortunately isn't TCP/IP based and so can only be
+physically accessed.
+
+<h3>
+PV Panel Mounting
+</h3>
+The main building has a large roof area, but is oriented in the wrong direction with the main ridgeline
+running north-south and the largest clear roof area facing almost due west. A large chimney and
+dormer substantially shade the south facing roof area, as do several large trees to the south.
+So, that left us with ground mounting as the best option.
+<p>
+Although the property is nearly 10 acres (4 hectares) in size, more than half is heavily
+wooded. The remaining portion also has a number of trees. Careful study and hours spent
+walking around with a borrowed
+<a href="http://www.solarpathfinder.com/">"Solar Pathfinder(tm)"</a> showed that only one
+location was feasible, and even then some trees will need to be cut down:
+<p>
+<img src="terrain.png" align="center" border="0" alt="satellite view of property">
+<p>
+In this picture north is straight up and the two colored rectangles represent the footprint of the ground mount structure
+for two options. The horizontally striped black-and-white rectangle represents the initial preferred
+location, but that has the disadvantage of stradling multiple buried power and phone lines and has
+a significant change in elevation (over eight feet from opposite corners of the rectangular footprint).
+<p>
+By shifting the structure to the west and south (rectangle with black and yellow stripes)
+we avoid the buried lined and reduce the elevation change.  Moving even farther to the west
+(left) would have been even more favorable terrain but we didn't want to unnecessarily block
+the southern view of our neighbors to the north.
+<p>
+Ground mounting of a large area of panels requires a substantial foundation. When initially reviewing
+commercial offerings a DIY approach was considered, and a local mechanical engineer was consulted. As
+that PE explained, the large area of panels constitutes a giant sail that by code
+has to withstand an enormous uplift force from strong winds (roughly 30,000 pounds). The usual way
+of accomplishing that is with massive concrete footings. The panels we ultimately selected,
+<a href="http://www.solarworld-usa.com/">SolarWorld</a>
+<a href="http://www.solarworld-usa.com/installer-program/products/sunmodule-solar-panels.aspx#tab-tab0">Sunmodule<a/>
+SW 250 watt panels, are 66" by 38" and weight 47 lbs each. There will be 60 panels total, or
+1045 square feet and 2,800 lbs. The foundation will consist of 24" diameter concrete piers (exact
+number unknown at this time, but probably 8) and so many yards of concrete will be required.
+
+<h3>
+Interconnection
+</h3>
+The main building has two separate 200A service entrances (load centers) fed from a 400A utility
+meter. By code only a maximum of 40A can be backfed into either load center, without downgrading
+the main breakers to 150A from 200A. For convenience of installation we may end up backfeeding both
+interactive inverters into one load center, and 150A main breakers have been acquired for both
+load centers.
+
+
+</div>

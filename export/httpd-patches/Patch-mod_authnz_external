@@ -1,0 +1,14 @@
+diff -u -r ./mod_authnz_external.c ../mod_authnz_external-3.1.0/mod_authnz_external.c
+--- ./mod_authnz_external.c	2006-02-17 21:35:15.000000000 -0500
++++ ../mod_authnz_external-3.1.0/mod_authnz_external.c	2006-08-08 14:26:18.000000000 -0400
+@@ -633,6 +633,10 @@
+     ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
+     	"AuthExtern %s [%s]: Failed (%d) for user %s",
+ 	extname, extpath, code, r->user);
++
++    /* The special return code ENOSYS signals httpd to return a 503 */
++    if (code == ENOSYS) return AUTH_UNAVAILABLE;
++
+     return AUTH_DENIED;
+ }
+ 

@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Veridical Systems, Inc.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="resource-type" content="document">
+  <meta name="description" content="Veridical Systems home page">
+  <meta name="keywords" content="VSI">
+  <meta name="distribution" content="global">
+  <meta name="copyright" content="Copyright 2010 by VSI">
+</head>
+<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" text="#000000" bgcolor="#ffffff">
+<table height="100%" width="100%" border="0" cellpadding="1" cellspacing="0" summary="">
+<tbody>
+  <tr>
+    <td rowspan="2" valign="top" bgcolor="#b0b0b0">
+      <br>
+      <b><big><a href="/">Home</a></big></b><br>
+      <p><hr></p>
+      <b><big>About VSI</big></b><br>
+      &nbsp;<a href="/what.html">What&nbsp;We&nbsp;Do</a><br>
+      &nbsp;<a href="/who.html">Who&nbsp;We&nbsp;Are</a><br>
+      &nbsp;<a href="/contact.html">Contact&nbsp;Info</a>
+      <p><hr></p>
+      <b><big>Resources</big></b><br>
+      &nbsp;<a href="/blog/">Blog</a><br>
+      &nbsp;<a href="/data/">Data&nbsp;Archives</a>
+      &nbsp;<a href="/export/">Export</a>
+      <p><br></p>
+    </td>
+    <td rowspan="2" bgcolor="#7f7f7f"><font size="1">&nbsp;</font>
+    </td>
+    <td valign="top" bgcolor="#ffffff"><div align="center">
+	
+<title>AGS Problems</title>
+<h1>
+<a href="index.html">
+Photo-voltaic Power Generation System
+</a>
+</h1>
+<h2>Automatic Generator Start (AGS) Issues</h2>
+<div align="left">
+Since troubleshooting the Schneider/Xantrex Automatic Generator Start (AGS) is turning out to be
+an extended and significant effort, I'm collecting information here for ready access.
+<p>
+<h3>Background</h3>
+The Xantrex AGS is used to autostart a 5KW diesel generator. Brief grid outages of a few seconds
+are common here, and the 16KWh battery bank is capable of carrying the critical loads for several
+hours. The desired behavior of the AGS is that the generator will be started only when the Xantrax
+hybrid inverter is inverting, and the battery
+voltage has dropped to a level consistent with a significant (20-25%) state of discharge, <em>or</em>
+the critical loads are at a higher than normal level. The AGS documentation<small><sup>1</sup></small> indicates such a
+configuration is possible but in practice we have been unable to achieve anything even close. In
+particular the AGS is prone to starting the generator for no discernable reason, often shutting it
+down immediately but also sometimes leaving it running for hours when grid power is available and
+the batteries are fully charged.
+<p>
+In the hope of aiding the troubleshooting process a
+<a href="http://www.schneider-electric.com/products/ww/en/7000-solar-off-grid-and-back-up/7030-monitoring/62089-conext-combox/">
+Conext Combox</a>
+ device was purchased and installed,
+and configured to log relevant status parameters at five second intervals (the finest granularity
+possible). The generator itself was disabled by disconnecting power from the internal DC bus used by
+internal remote start controller and the Xantrex AGS was configured to support automatic generator
+starts triggered by either battery voltage or high inverter loads. The complete configuration of
+the AGS and the XW 6048 hybrid inverter are recorded in text file form <a href="xantrex.txt">here</a>.
+<p>
+After a week the logs were pulled (manually by removing the SD card; the web based log viewer in the
+Combox is worthless) and analyzed. For the period 2014-08-22 through 2014-08-31 inclusive, there were
+16 false starts; 12 on the 22nd and one each on the 23rd, 25th, 27th, and 31st. Inverter mode was
+logged only one time during that entire week, on the 31st corresponding to that false start (and only
+for 15 seconds). These
+logs can be seen <a href="logs/">here</a>; both the raw CVS logs and selected content converted to
+spreadsheet format.
+<h3>Gory Details</h3>
+The AGS and XW 6048 were upgraded to the latest available firmware before this latest set of logs was obtained.
+<p>
+The installation of the AGS doesn't appear to be suspect, but the entire wiring scheme from the generator
+internals to the AGS unit is documented in
+<a href="genwiring.txt">excruciating detail</a>. For ease
+of troubleshooting multiple 24V LED indicator lights were added to show all relevant control signals. The AGS
+interconnections and indicator lights can be seen in this <a href="../../MEP802A/wallpanel1.jpg">photo</a>.
+Note that once it became clear that debugging the AGS was going to be a non-trivial exercise I purchased
+a second Xantrex SCP (System Control Panel) accessible from the location where the AGS and wiring were
+installed<small><sup>2</sup></small>.
+<p>
+Per the documentation the AGS is not supposed to start the generator via the "Strt Load" trigger unless
+the threshold current (10.0A here) is exceeded for five minutes, and only when the XW is in inverter mode.
+That clearly isn't the case as almost all of the false starts occur when the XW is not inverting.
+<p>One theory that has been advanced by Xantrex tech support is that the XW is inverting for an interval
+too brief to be noticed or to be logged by the Combox (which cannot log more frequently than 5 second intervals).
+I think that unlikely because of the Bogard Engineering "Trimetric" State-of-Charge controller that is
+monitoring the battery bank. It is configured to recognize the batteries as fully charged when the battery
+voltage exceeds 54.3 volts <em>and</em> the current is less than 7.0 amps. However, it continues to accumulate
+watt-hours so the percentage SoC indication increments beyond 100%. If any current is drawm <em>from</em>
+the battery bank, even for a millisecond, the SoC indication immediately resets to 100%<small><sup>3</sup></small>.
+I initially thought
+that behavior annoying, and complained to the manufacturer who confirmed it as a "feature not a bug", but now
+consider it a useful feature as I can tell at a glance roughly how long it's been since the last grid glitch.
+<p>
+Initially I thought the AGS was triggering the generator start based on AC output load even when the XW
+was clearly not in inverter mode, but after much experimentation and observation I don't see any pattern
+at all. Attempts to cause a false start by sustaining a load above the "Strt Load" threshold for more than
+five minutes have failed, and false starts have occurred when the load was minimal or even negative (with a
+grid tied inverter backfeeding the critical loads panel connected to the XW 6048 AC Out).
+<p>
+Note that the Combox does not properly recognize a power export from the critical loads (when the backfeed from
+the interactive inverter into the critical loads panel exceeds the power consumption from that panel, which
+usually occurs during daylight hours). Both the logs and the web portal graphical display show zero for negative
+power flows. However, the SCPs do correctly report negative power consumption from AC Out and the false starts
+have been observed with power consumption positive (and above the Strt Load threashold, when not inverting),
+positive (and well below Strt Load), zero, and negative. Whatever is triggering those starts isn't obvious.
+<p>
+A number of the parameters the Combox logs appear to be dubious, like "XW AC Load Current" and
+"System XW Load Power" for which improbable values are sometimes logged. The Combox also occassionally writes
+spurious garbage in the CVS log files. It's possible the Combox is also incorrectly logging the generator
+status parameters as well, though the generator starts are real enough.
+<p>
+<h4>Detailed Log Analysis - short-cycle misfires</h4>
+Schneider/Xantrax tech support has asked for an analysis of the logs (which were also provided to them in full). So
+here's my analysis of a representative false start on 08-27. I picked that day because there was only the
+one false start that appears to be most representative of such events (08-25 is comparable). The raw log file is
+<a href="logs/0827.cvs">0827.CVS</a> and the relevant records extracted to Excel spreadsheet format is
+aa href="
+<a href="http://solar.schneider-electric.com/wp-content/uploads/2014/05/503-0247-01-01_RevA.1_Modbus_Map_AGS_Device.pdf">AGS</a>
+and
+<a href="http://solar.schneider-electric.com/wp-content/uploads/2014/05/503-0246-01-01_RevA.1_Modbus_Map_Conext_XW_Device.pdf">XW</a>.
+<p>
+The false start begins at 06:53:00. The <em>Generator On</em> reason is "AC Current High" (3), the <em>Generator Off Reason</em>
+when the run signal is dropped 30 seconds later at 06:53:30 is "AC Good" (21). Note the <em>XW Inverter Status</em> remains
+"AC Pass Through" (1025) throughout. At that time the
+<em>SYSTEM Load Output Power</em> is 926W, <em>XW Load AC Current</em> is 9.5A, <em>XW Load AC L1 Current</em> is 3.4A and
+<em>XW Load AC L2 Current</em>
+is 6.2A. The total of L1 and L2 is 9.6A, close to the <em>XW Load AC Current</em> (in some of the logs <em>XW Load AC Current</em>
+is recorded as zero but L1 and L2 usually appear to have sensible values).
+<p>
+Note in particular that:
+<ol type="a">
+<li> the XW 6048 never enters "Invert" mode (or if it does it's for less than five seconds<small><sup>4</sup></small>).
+<li> the AC Load is never greater than 10.0A (the Strt Load setting), not for five minutes per the Xantrex AGS
+documentation and not for even five seconds
+<li> the run signal is dropped in only 30 seconds, whereas the Xantrex AGS documentaiton states that the Stop Load
+trigger requires a full minute below the Stop Load current threshold (7.0A here).
+<li> AC2 (generator input) is not logged because the generator was completely disabled throughout this logging period
+(I didn't see the point in continually abusing the generator with multiple short-cycle false starts).
+</ol>
+If I can get some sort of resolution of this type of incident I'll move on to the more complicated events that were logged on
+08-22 and 08-23 where the run signal was sustained for hours with grid power available and without the XW 6048 ever
+entering "Invert" mode.
+<h4>Hypotheses</h4>
+I'm getting input from a number of interested spectators. One suggestion is that EMI may be an issue. That is plausible
+given that the utility power here is fairly "dirty", with brief outages and voltage sags being rather common. I
+don't have the equipment to quantify the problem, but we see the lights flicker and when I'm in my office I hear
+the squealing and beeping from multiple UPSes.
+<p>
+That said we haven't noticed any problems<small><sup>5</sup></small> during the year and a half before the AGS was installed.
+That is powered only from the Xanbus and so presumably would be isolated from line power noise.
+<p>
+The XW 6048 is about 20' from a main lug service entrance panel which is fed from a main disconnect about 50'
+away where the neutral-ground bonding occurs. The grounding conductor goes to two ground rods by the utility meter
+(another 10' or so). Those two ground rods are connected to the ground plane system of an adjacent radio tower
+via a 4" wide by 25 gage (0.022") copper strap. The ground plane system consists of a 30' diameter ring of copper strap and
+six ground rods. The ground lug bar in the SE panel is also connected to a new ground rod installed with
+the PV system that is about 20' away. The 240V feed to the XW 6048 (grid input or "AC1") is properly grounded
+to the SE, and that to the main disconnect.
+<p>
+Schneider/Xantrex tech support asks periodically about the Xanbus (Xantrex proprietary version of Modbus) network cabling.
+The Xantrex documentation specifies a maximum length of 131' (40m) for the entire network. Recently they also began
+documenting a requirement that no single segment (between any two XW devices) be less than 6.5' (2m) in length. The
+network topology is as follows (also at the end of the detailed <a href="xantrex.txt">configuration document</a>).
+<pre>
+Xanbus wiring	T == RS485 120ohm terminator
+		Cat5e, minimum cable length 6.5' 2m), max total network length 131' (40m)
+		Documentation says use T568A termination but Xantrex tech support confirmed
+		that consistent use of T568B is fine (that is the in-house standard)
+
+	[SCP bmst]	[AGS     ]	[XW  6048]	[Combox  ]	[SCP up  ]
+            T\______7'______/\______13'_____/\______7'______/\______49'_____/T
+
+</pre>
+Total length of the network is approximately 76', give or take a couple of feet. The two 7' segments are
+factory made and the two longer segments were site terminated.
+<p>
+All cables are Cat5e and either factory terminated with molded connectors or site made with an RJ45
+crimp tool and molded boots, and checked with a <em>TENMA 72-6709 Network Cable Tester Pro</em> Cat5 cable tester
+for wiremap, twist, and shorts. The Xantrex documentation calls for T568A termination but the local standard here for
+the several thousand feet of installed Cat5e is T568B. Most factory made Cat5 Ethernet cables come that way too. I
+know from working with Ethernet that "A" and "B" terminations are equivalent as long as both ends of the cable are
+done the same<small><sup>6</sup></small>, and Xantrex tech support agreed with that at the time the Xantrex XW 6048
+was first installed.
+<h3>Current Status</h3>
+While still hoping for a resultion via Xantrex tech support I'm facing the realization that it
+may be necessary to kludge some other solution. Some options are considered in the following section. I don't
+want to invest yet more time and money in workarounds until, hopefully, I have a better understanding of
+why the AGS is misbehaving as it does. At the moment the false starts appear to be completely unpredictable
+which is going to make any workaround more difficult.
+<p>
+I will update this section with any new information.
+<p>
+UPDATE 2014-09-04: Xantrex tech support has concluded that the AGS device is defective and will replace it
+even though I can't find the proof of purchase paperwork. They wanted the paper sticker bar code on the
+<a href="AGSback.jpg">back</a>.
+<p>
+UPDATE 2014-09-05: I received a call from a new person at Schneider/Xantrex who says the logs indicate a problem
+with the AGS or XW 6048 hardware. I sure hope it's the former as replacing the XW 6048 would be a pain. He
+said Schneider would replace the AGS, even though I've lost the proof-of-purchase paperwork.
+<p>
+UPDATE 2014-09-15: The new AGS was received on Saturday. It came pre-loaded with a very new firmware version,
+3.00.00 BN 2. When installed the Conext Combox didn't recognize it but after digging around on the Schneider
+web site I found a very new version Conbox firmware upgrade, Ver02.00BN0656. On installing that the Combox did
+recognize the new AGS. Unfortunately the new AGS is exhibiting exactly the same false start behavior as before.
+It didn't take long to capture one; event <a href="logs/0915.xls">0915.xls</a> occurred only a few
+minutes after I enabled
+Automatic mode on Monday morning. The generator was enabled and connected to the AGS up so there was an actual
+start. As before the
+XW did not enter invert mode. The load as shown by "XW Load AC Power" did not exceed 1100W from the point
+where Automatic mode was enabled until the false start. However, I noticed something interesting: the false
+start occurred exactly five minutes after automatic mode was enabled and "XW Load AC Current" exceeded 10.0A
+(the AC High start trigger threshold). It's as if the AGS/XW were ignoring the fact that the XW wasn't inverting.
+<p>I'm a bit puzzled at the discrepancy between "XW Load AC Power" at <1100W, "XW Load AC Power - Apparent" at
+<1400VA, and "XW Load AC Current" at ~11.5A which is roughly 2700W. That's quite a discrepancy.
+Autostart is disabled again pending feedback from Schneider/Xantrax tech support.
+<p>
+I still hope to eventually resolve the issues with the Xantrex AGS, but I meantime I called Ralph Hiesey of
+<a href="http://www.bogartengineering.com/">Bogart Engineering</a>
+to confirm the suitability of the Pentametric state-of-charge monitor for generator starting.
+That ended up being a very long and informative call touching on almost every aspect of my complex PV grid-tied
+off-grid system and I learned a number of things of interest. I was pleased to hear that the Pentametric could
+share a shunt with the Trimetric meter that is already in use, saving me the hassle of redoing that installation
+in the upstairs hallway wall. After that call I ordered the Pentametric PM-5000-U
+and PM-101-CE products and downloaded the documentation with the intention of configuring the Pentametric to
+autostart the generator based on state-of-charge levels, either as an adjunct to the Xantrex AGS or as a complete
+replacement. I'd still really like to be able to start the generator based on high inverter loads but that may
+not be possible.
+<p>
+UPDATE 2014-09-16: Schneider/Xantrex tech support says that since the new AGS didn't fix the problem it must
+reside in the XW 6048 inverter, and they will replace that under warranty. Since the legacy XW 6048 has been
+discontinued I will receive the newer XW+NA 6848. After a quick glance at the specs that appears to be at
+least as good and probably a step up in performance<sup>7</sup></small>. I just hope the replacement won't require extensive rework
+of the EMT conduit.
+<p>
+UPDATE 2014-09-20: I was told by Schneider/Xantrex tech support on 2014-09-17 that I would
+need to upgrade the SCPs to firmware version 865-1050-01.02_00_00.BN0013.xf0. That was a bit puzzling as
+the SCPs are currently at version "1.06.00 BN 19" which appears to be newer, but on 2014-09-18 I gave it
+a try. The Combox will not recognize 865-1050-01.02_00_00.BN0013.xf0 as a valid upgrade option, whereas it
+does recognize the 865-1050.01_06_00.BN0019.xf0 I used for the earlier upgrade to "1.06.00 BN 19". I reported
+that result to Schneider/Xantrex tech support but have not received a response yet (it typically takes a
+couple of days to get a response, if any, to such queries).
+<p>
+In the meantime I have received and partially installed the Pentametric battery monitor (PM-5000-U input unit
+and PM-101-CE Ethernet interface). A fuse holder is on order for the battery bank connection but in the meantime
+I've powered it up with a standalone DC power supply and have configured the Ethernet connectivity. Unlike most
+such gadgets the Pentametric does not provide a web server interface, instead Bogart supplies the source code
+to a dedicated utility that uses a custom homegrown protocol on TCP port 1701. That did compile successfully
+(with one tweak) on an Ubuntu 12.04 system. The Pentametric
+will drive an external relay (also on order) by programmable battery voltage and SoC thresholds. If we can get
+the AGS to work it will be used for load based generator starts and the Pentametric for SoC based starts. If not
+then the Pentametric will be used exclusively for generator starting.
+<p>
+<a name="2014-09-24"></a>
+UPDATE 2014-09-24: The frustration continues. The new XW+6848 inverter is scheduled to arrive tomorrow (I
+received a call from the shipping company), but I'm still unable to upgrade either SCP to the "1.02 BN 13"
+firmware version I'm told is necessary for that new inverter. This remains the case even after upgrading the
+Combox yet again, to Ver02.01BN0673 which was only released on Sept. 22. The latest Schneider tech support
+contact doesn't appear to believe that I'm doing the upgrade properly, so I've prepared some screen shots as
+proof:
+<p>
+A screenshot showing the current Combox <a href="combox-1.png">software version</a> (upgraded earlier today).
+<p>
+A screenshot showing the unzipping of the <a href="shell-1.png">SCP firmware file</a>.
+<p>
+A screenshot showing the <a href="combox-2.png">start</a> of the upload of that file to the Combox.
+<p>
+A screenshot showing the <a href="combox-3.png">completion</a> of the upload.
+<p>
+A screenshot showing the <a href="combox-4.png">pick list</a> that does <em>not</em> include the just uploaded firmware version. Note
+the older "1.06.00 BN 19" still appears as I don't know how to remove it without completely wiping the Combox
+configuration (and anyway the "1.02 BN 13" upgrade was tried first).
+<p>
+<a name="2014-10-06"></a>
+UPDATE 2014-10-06:
+The resolution of the firmware upgrade issue was simple once finally known: I was instructed to rename the file
+865-1050-01.02_00_00.BN0013.xf0 to 865-1050.02_00_00.BN0013.xf0 (i.e., remove the "-01"). That did the trick.
+<p>
+The new XW+6848 arrived as promised and was installed on 2014-09-27. I did the installation strictly by the book,
+including use of a <a href="XW+6848-torque.jpg">torque wrench</a> for tightening the terminal
+<a href="XW+6848-connections.jpg">connections</a><small><sup>8</sup></small>.
+No false starts at first, even with
+"AC Current Level To Start" at 3.0A and "AC Current Trigger Start Delay" at 0.5 minutes to encourage any misbehavior.
+Hurray!! I was starting to be cautiously optimistic about an end to this long ordeal.
+But then on 2014-10-05 I was demonstrating the multiple means of stopping or disabling the generator to my wife, in
+preparation for an upcoming trip that will have me overseas for several days (at this point my wife doesn't trust
+the autostart controls at all). I engaged the manual start inhibit switch that I've wired into the transfer switch
+panel. This is wired across leads 5 and 10 of the AGS, and generates a F203 fault code and reverts the generator
+state to "Manual Off" when closed<small><sup>9</sup></small>.
+<p>
+Immediately after closing that switch, clearing the fault code, and re-enabling Automatic mode the AGS enabled the
+run signal. This with the XW still in AC Pass Through mode. Arruggh ... the same false start issue that has plagued
+us all along.
+<p>
+I found that to be repeatable; each time I set to Manual Off mode and then back to Automatic the AGS will now
+enable the generator run signal (the generator itself has long been disconnected from AGS control). This after a week
+during which no false starts were observed. I have no idea why this is happening now.
+I did manually run the generator (disconnected from the AGS, but with AC2 power visible to the XW) a couple
+of days ago. Yesterday I power cycled the Combox (by disconnecting the Xanbus cable) as it had stopped responding.
+Then the run inhibit switch test. Perhaps one of those events was the provocation?
+<p>
+As an experiment I disconnected all the Xanbus devices except the AGS, the XW, and the Combox (AGS-XW-Combox). I
+used brand
+new Cat5e cables. Note that with this configuration <em>everything</em> has been replaced since the false starts
+were first experienced: the AGS has been replaced, the Combox is brand new with firmware upgraded twice, the XW+6848
+is brand new as of a week ago. The cables are new (two factory made 7' Cat5e patch cables), and I even dug out two
+new RS485 terminators. So <em>every</em> single component of the configuration has been replaced.
+<p>
+The false start is still occurring! With the "AC Current High" trigger, with the XW <em>not</em> inverting.
+<p>
+As a second experiment I replaced the Combox with an SCP (SCP-AGS-XW, again with two new 7' Cat5e cables). Same result.
+So, we can rule out the cables as the problem occurs with multiple cables. We can rule out the Combox and the SCP
+as the problem occurs with those components completely absent. This problem has occurred with two different AGS
+devices and with two different XW devices.
+<p>
+At this point I'm left with the conclusion that the Schneider/Xantrex/Conext hardware/firmware is defective by design.
+Remember this false start issue has persisted across multiple
+hardware and firmware upgrades, to the point where every single component, both hardware and software including all
+cables and terminators, has been replaced. yet, the problem persists. I don't think we can still credibly assume any
+type of single-sample hardware defect.
+<p>
+I'm not terribly optimistic about a solution at this point, though I will cooperate fully with Schneider tech
+support if they have any more ideas (any solution will involve a firmware upgrade at a minimum, I think).
+<p>
+Note to Schneider tech support: I reiterate my earlier offer to configure direct access to the Combox. I'll just
+need your source IP address(es) to get you through the three firewalls it sits behind. You could then review the
+device configurations and cause and observe the false starts yourself.
+<p>
+<a name="2014-10-09"></a>
+UPDATE 2014-10-09:
+After a phone discussion with Schneider/Xantrex tech support my contact concurred that the firmware was buggy and
+said that resolution would need to be escalated to the firmware maintainers. I disabled the load based triggers,
+in addition to disconnecting AGS harness leads 5, 6, and 12 as recommended.
+<p>
+I left the "Exercise" trigger enabled, and this morning I experienced the first exercise event with the
+generator actually connected. Unfortunately the AGS immediately killed the run signal right after asserting it,
+and then continued to repeat those short starts every 115 seconds until I disabled the AGS. This
+<a href="exercise.xls">log extract</a> shows the first few of those abortive starts. I don't know how long it
+would have continued those short starts, but if continued for very long that would be pretty rough on the generator.
+<p>
+So, I can't use the AGS for load based starts and I can't use it for periodic exercising. I've not yet seen
+problems with voltage based false starts, but since the Pentametric also does voltage based triggers (in
+addition to SoC) that isn't of much interest even if it worked reliably. The AGS is thus useless until and if
+the false start problem is addressed, and will be disconnected until and if Schneider has new firmware that
+purports to do so.
+<p>
+<a name="2014-10-10"></a>
+UPDATE 2014-10-10:
+I received notice from Schneider tech support yesterday that the firmware developers in Canada have confirmed
+a firmware bug. No ETA for updated firmware was given, but it's a relief to have that confirmation as usually
+the hardest part of solving this type of problem is just recognizing that there is a problem. The "Exercise"
+mode problem is assumed to be a consequence of the same bug.
+<p>
+I was was also asked for a photo of the installation. A shot of the
+<a href="../../MEP802A/wallpanel1.jpg">initial AGS installation</a>
+is already on this web page, but I took one of the <a href="wall_panel.jpg">current configuration</a>. Notice it's
+gotten a lot more complex as I struggled to debug the autostart problems; I added more indicator lights and a time
+delay relay in the hope of filtering out some of the shorter false starts<small><sup>10</sup></small>. I've also added
+the Pentametric SoC
+meter which is now the means of controlling generator start. Note some of the leads and an indicator light are
+dangling loose as I wait to see what the final configuration will look like. I will probably end up with seven LED
+indicators which will require another cast aluminum box as seen to the left of the SCP. The AGS will be used only
+for manual generator stop/start via the SCPs or Combox, with all start triggers disabled, and will be removed
+entirely the first time it misbehaves in that minimal configuration.
+<p>
+I've also posted an <a href="genwiring.txt">ASCII art<small><sup>11</sup></small> wiring diagram</a>
+corresponding to that current configuration. That is intended for my use and so describes a lot more
+than just the Schneider AGS configuration; it includes the Inova Tech autostart board and the Pentametric
+SoC meter and relay.
+<p>
+<a name="2014-10-13"></a>
+UPDATE 2014-10-13: Schneider has confirmed that they have reproduced the false start issue which will take an
+indeterminate amount of time to resolve. In the interim they advise us to "...put the AGS into STANDBY when
+you don't want the gen to start automatically". Well, the whole point of the AGS is to start the generator
+automatically (that's the "A" in "AGS"). So the AGS is disconnected and we are using the Bogart Pentametric SoC
+meter to handle generator autostart. That has behaved reliably with no false starts.
+<p>
+For now the Schneider AGS is still installed, although electrically disconnected. If and when Schneider
+releases new AGS firmware I'll give it at least a brief try, but if it still shows any proclivity for false
+starts it will be removed entirely and discarded (I couldn't in good conscience sell it on Craigslist or Ebay).
+<h3>Possible Workarounds</h3>
+Unfortunately many days of consultation with Schneider/Xantrex technical support have not brought much
+hope of a resolution. With something like $10K invested in the Xantrex hardware and generator switching
+to a different product mix is unfortunately not a viable option, so I've been considering my options
+for external workarounds to what appear to be uncorrectable software bugs in the Xantrex hardware.
+<p>
+I have discussed the problem extensively with Peter Albrecht of
+<a href="http://inovahightech.com/">Inova Hightech, Ltd.</a> who has
+been most helpful. The short false starts of a few seconds duration, which seem to be most common,
+could be filtered out with a standard time delay relay. I will install one just to protect against short-cycle
+abuse of
+the generator, but that will not address the issue of the long term (many minutes to many hours) false
+starts that have been recorded. Peter has also offered to reprogram the Invoa autostart board to perform the
+delay function in software (e.g. ignoring a run signal until it persists for N seconds).
+<p>A NO relay with a 120V coil powered from the grid could be used to disable autostarting of the
+generator entirely when grid power was present. That relay would need a time delay so a grid
+hiccup during an outage wouldn't immediately kill the generator. However, that relay would prevent
+scheduled exercising of
+the generator (currently configured for 21 days) which I consider a valuable feature. The purist in me also
+dislikes the idea that a coil will be energized almost the time, even if the power consumption is only a
+few watts. Inova is developing
+a fancier autostart board for this generator that will include an exercise function, so that is a
+possible (albeit expensive) alternative if such a grid cutout relay is used. I'm assuming of course
+that the Xantrex AGS doesn't fail to start the generator when it should; so far I've only seen false
+starts but we haven't had any generator-worthy outages yet.
+<p>
+Yet another and even more expensive option would be to discard the Xantrex AGS entirely and replace it
+with an independent autostart controller. The Inova board provides true "two wire" start
+capability<small><sup>12</sup></small> so the
+external controller only needs to close a set of dry relay contacts to signal the generator to start.
+Some off-the-shelf hardware of that type is apparently available
+but at least some custom development would probably be necessary to handle the battery DC voltage trigger.
+Such a project would exceed my electronics skills and enthusiasm and so would require some outside assistance.
+I've made some preliminary inquiries and it appears that
+could be done for about what I've already spent on the Xantrex hardware<small><sup>2</sup></small>.
+UPDATE: there appear to several off-the-shelf solutions that could replace the Xantrex AGS entirely, such as
+the Victron BMV-600S monitor and the
+<a href="http://www.bogartengineering.com/products/PentaMetric">Bogart Pentametric</a>. Since I'm already using the
+Bogart Trimetric monitor and am happy with it I'll probably try the Pentametric first. The Pentametric has a relay that
+can be configured to close when the SoC drops to a preset level, and open when it rises to an "off" setpoint,
+while also triggering off high and low temperature compensated battery voltages. Triggering just off of battery
+voltage as the Xantrex AGS does isn't desirable (as the battery voltage varies with load as well as SoC
+of charge), and I'd ideally like a load based trigger rather than running the batteries down when the
+generator will need to be started soon enough anyway, but a SoC based trigger would be preferable to what
+I have now. The Pentametric monitor costs $360 (or $510 with the optional Ethernet interface).
+<h3>Troubleshooting Notes</h3>
+In fairness to Schneider/Xantrex the XW 6048 inverter and AGS module are complex devices and they have
+been generally responsive in talking to me on the phone and via E-mail. Some of our troubleshooting sessions
+have taken the better part of an hour and they're still talking to me. In the hope that we may yet succeed
+in figuring out and correcting the false start problem I offer the following thoughts:
+<ul>
+<li> I will cheerfully configure any logging the Combox is capable of.
+<li> I have a logging multimeter (Fluke 289) which can do detailed logging of any one parameter of
+	interest (e.g. voltage, current) for periods of up to several days. Since the false starts don't happen
+	every day it may take awhile to capture the data of interest, but then again since the AGS was installed
+	about a month ago we've not experienced more than three days without a false start event.
+<li> I can configure direct access to the Combox by Schneider/Xantrex personnel. I'll need the source IP address to
+	forward inbound connections through the firewalls.
+</ul>
+What I don't want to do is keep "resetting to factory defaults". I've been asked to do that several times now.
+The very detailed <a href="xantrex.txt">configuration</a> must be painstakingly typed in manually, a process
+that takes about twenty minutes during which time the critical loads are without power. I can accept an occasional
+mysterious glitch<small><sup>13</sup></small> in heavily computerized hardware, but such a "reboot" is a last resort
+intervention that is not acceptable on a routine basis.
+<p>
+<p>
+_
+<p>
+<small>
+<sup>1</sup> "Xantrex XW Automatic Generator Start Owner's Guide" in file
+<em>XW-Hybrid-Inverter-Charger_Installation-Guide(975-0239-01-01_rev-E).pdf</em>, no direct link available.
+<p>
+<sup>2</sup> In hindsight I consider an SCP next to the AGS to be essential to getting the Xantrex autostart
+working, and the Conext Combox as well. Note that
+starts to add up though; roughly $222 for the second SCP, $365 for the Combox, plus the $170 for the AGS makes
+nearly $800 in Xantrex autostart-related hardware alone. Ouch.
+<p>
+<sup>3</sup> I'm assuming that the battery voltage must drop below the 54.3V float voltage level for the inverter
+to operate.
+<p>
+<sup>4</sup> Less than five seconds per the Combox log, but almost certainly zero per the earlier discussion of
+the Trimetric State-of-Charge monitor. I was not present on 8-27 to confirm that no very brief grid interruption
+occurred but I have witnessed multiple similar false starts where there was no perceptible drop in battery voltage
+(below float charging level).
+<p>
+<sup>5</sup> With the possible exception of an instance where a nuisance alarm (low battery warning) sounding
+when it shouldn't.
+<p>
+<sup>6</sup> Terminate one end of a Cat5 cable per T568A and the other per T568B and you have a crossover cable.
+<p>
+<sup>7</sup> I've found several discussions online that claim that the rebranding of the Xantrex XW6048 to the
+Conext XW+6848 involved only software and cosmetic changes, and not any substantive hardware upgrades. According
+to those discussions the new rating of 6800W versus 6000W just reflects the use of new criteria for that rating.
+<p>
+<sup>8</sup> Professional electricians laugh at me when I do that, but I'm comfortable with the use of torque
+wrenches where proper torque does matter (I own a dozen torque wrenches), and I want to "CYA" to deflect any
+possible warranty issues.
+<p>
+<sup>9</sup> The transfer switch selects between two generators, a manual start gasoline genset and the autostart
+diesel generator. Normally the switch is set to the diesel generator, but will be switched to the gasoline one
+when exercising that generator with a load. The run-inhibit switch prevents autostart of the diesel generator
+when its output isn't visible to the XW inverter. It also constitutes another visible and easily understood
+means to disable autostart; just grab the transfer switch handle and pull it outwards slightly. I've wired a
+bright red indicator LED to show when this run-inhibit is in effect.
+<p>
+<sup>10</sup> The time delay relay is currently superfluous with the Pentametric meter controlling the generator,
+as the Pentametric has shown no tendency for false starts. The TD relay was ordered before the Pentametric. It
+still comes in handy for testing because the built-in LEDs will show coil activation before the contacts close,
+allowing testing without an actual generator start without disconnecting any wiring.
+<p>
+<sup>11</sup> I date myself with the use of ASCII art, which I use for this sort of thing out of old habit. In
+the event of a catastrophic failure of the local infrastructure one can read or edit ASCII files on any type
+of computer, so I tend to keep key elements of mission critical info in plain text format.
+<p>
+<sup>12</sup> In principle the Xantrex AGS could have autostarted the generator directly, without the Inova
+board. However, that would have required running a harness of multiple wires out to the generator, and non-trivial
+custom wiring within the generator. The Xantrax AGS is also significantly less sophisticated than the Invoa board,
+which directly recognizes fault conditions such as low oil pressure and overtemp or overload conditions,
+and does a temperature compensated preheat interval.
+<p>
+<sup>13</sup> In the year and a half of operation before the AGS was added I only did such a reset once, and that
+was at the request of Xantrex technical support for a nuisance alarm. That alarm has not occurred since but I
+don't know if the reset had anything to do with it.
+<p>
+</small>
+</div>
+	</td>
+  </tr>
+  <tr>
+    <td valign="bottom" bgcolor="#ffffff">
+      <table width="100%" border="0" summary="">
+	<tbody>
+          <tr>
+            <td>
+              <hr>
+              <small>
+              <em>This site Copyright &#169; 2002-2016 VSI.</em>
+              </small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</table>
+</body>
+</html>
+

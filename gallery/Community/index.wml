@@ -1,0 +1,28 @@
+
+#use wml::vsi area=title page=home
+
+<title>Community Resources</title>
+
+<h1>
+<a href="index.html">
+Community
+</a>
+</h1>
+
+
+</p>
+
+<div align=left>
+
+This area reserved for topics of interest to the immediate "Sugarloaf West" local area, the
+residents on or around Mount Ephraim Road on the north-west side of Sugarloaf Mountain.
+
+<ul>
+  <li>
+    <a href="WISP-summary.html">Internet access - overview</a>
+  </li>
+  <li>
+    <a href="WISP-options.html">Internet access (wordy version)</a>
+  </li>
+</ul>
+</div>

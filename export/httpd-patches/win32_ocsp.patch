@@ -1,0 +1,121 @@
+--- modules/ssl/@mod_ssl.mak	2007-12-29 00:09:34.000000000 -0500
++++ modules/ssl/mod_ssl.mak	2009-06-01 08:51:28.367320600 -0400
+@@ -61,6 +61,7 @@
+ 	-@erase "$(INTDIR)\ssl_engine_kernel.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_log.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_mutex.obj"
++	-@erase "$(INTDIR)\ssl_engine_ocsp.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_pphrase.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_rand.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_vars.obj"
+@@ -74,6 +75,7 @@
+ 	-@erase "$(INTDIR)\ssl_scache_shmcb.obj"
+ 	-@erase "$(INTDIR)\ssl_util.obj"
+ 	-@erase "$(INTDIR)\ssl_util_ssl.obj"
++	-@erase "$(INTDIR)\ssl_util_ocsp.obj"
+ 	-@erase "$(OUTDIR)\mod_ssl.exp"
+ 	-@erase "$(OUTDIR)\mod_ssl.lib"
+ 	-@erase "$(OUTDIR)\mod_ssl.pdb"
+@@ -134,6 +136,7 @@
+ 	"$(INTDIR)\ssl_engine_kernel.obj" \
+ 	"$(INTDIR)\ssl_engine_log.obj" \
+ 	"$(INTDIR)\ssl_engine_mutex.obj" \
++	"$(INTDIR)\ssl_engine_ocsp.obj" \
+ 	"$(INTDIR)\ssl_engine_pphrase.obj" \
+ 	"$(INTDIR)\ssl_engine_rand.obj" \
+ 	"$(INTDIR)\ssl_engine_vars.obj" \
+@@ -147,6 +150,7 @@
+ 	"$(INTDIR)\ssl_scache_dc.obj" \
+ 	"$(INTDIR)\ssl_util.obj" \
+ 	"$(INTDIR)\ssl_util_ssl.obj" \
++	"$(INTDIR)\ssl_util_ocsp.obj" \
+ 	"$(INTDIR)\mod_ssl.res" \
+ 	"..\..\srclib\apr\Release\libapr-1.lib" \
+ 	"..\..\srclib\apr-util\Release\libaprutil-1.lib" \
+@@ -205,6 +209,7 @@
+ 	-@erase "$(INTDIR)\ssl_engine_kernel.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_log.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_mutex.obj"
++	-@erase "$(INTDIR)\ssl_engine_ocsp.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_pphrase.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_rand.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_vars.obj"
+@@ -218,6 +223,7 @@
+ 	-@erase "$(INTDIR)\ssl_scache_shmcb.obj"
+ 	-@erase "$(INTDIR)\ssl_util.obj"
+ 	-@erase "$(INTDIR)\ssl_util_ssl.obj"
++	-@erase "$(INTDIR)\ssl_util_ocsp.obj"
+ 	-@erase "$(OUTDIR)\mod_ssl.exp"
+ 	-@erase "$(OUTDIR)\mod_ssl.lib"
+ 	-@erase "$(OUTDIR)\mod_ssl.pdb"
+@@ -278,6 +284,7 @@
+ 	"$(INTDIR)\ssl_engine_kernel.obj" \
+ 	"$(INTDIR)\ssl_engine_log.obj" \
+ 	"$(INTDIR)\ssl_engine_mutex.obj" \
++	"$(INTDIR)\ssl_engine_ocsp.obj" \
+ 	"$(INTDIR)\ssl_engine_pphrase.obj" \
+ 	"$(INTDIR)\ssl_engine_rand.obj" \
+ 	"$(INTDIR)\ssl_engine_vars.obj" \
+@@ -291,6 +298,7 @@
+ 	"$(INTDIR)\ssl_scache_dc.obj" \
+ 	"$(INTDIR)\ssl_util.obj" \
+ 	"$(INTDIR)\ssl_util_ssl.obj" \
++	"$(INTDIR)\ssl_util_ocsp.obj" \
+ 	"$(INTDIR)\mod_ssl.res" \
+ 	"..\..\srclib\apr\Debug\libapr-1.lib" \
+ 	"..\..\srclib\apr-util\Debug\libaprutil-1.lib" \
+@@ -349,6 +357,7 @@
+ 	-@erase "$(INTDIR)\ssl_engine_kernel.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_log.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_mutex.obj"
++	-@erase "$(INTDIR)\ssl_engine_ocsp.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_pphrase.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_rand.obj"
+ 	-@erase "$(INTDIR)\ssl_engine_vars.obj"
+@@ -362,6 +371,7 @@
+ 	-@erase "$(INTDIR)\ssl_scache_shmcb.obj"
+ 	-@erase "$(INTDIR)\ssl_util.obj"
+ 	-@erase "$(INTDIR)\ssl_util_ssl.obj"
++	-@erase "$(INTDIR)\ssl_util_ocsp.obj"
+ 	-@erase "$(OUTDIR)\mod_ssl.exp"
+ 	-@erase "$(OUTDIR)\mod_ssl.lib"
+ 	-@erase "$(OUTDIR)\mod_ssl.pdb"
+@@ -424,6 +434,7 @@
+ 	"$(INTDIR)\ssl_engine_kernel.obj" \
+ 	"$(INTDIR)\ssl_engine_log.obj" \
+ 	"$(INTDIR)\ssl_engine_mutex.obj" \
++	"$(INTDIR)\ssl_engine_ocsp.obj" \
+ 	"$(INTDIR)\ssl_engine_pphrase.obj" \
+ 	"$(INTDIR)\ssl_engine_rand.obj" \
+ 	"$(INTDIR)\ssl_engine_vars.obj" \
+@@ -437,6 +448,7 @@
+ 	"$(INTDIR)\ssl_scache_dc.obj" \
+ 	"$(INTDIR)\ssl_util.obj" \
+ 	"$(INTDIR)\ssl_util_ssl.obj" \
++	"$(INTDIR)\ssl_util_ocsp.obj" \
+ 	"$(INTDIR)\mod_ssl.res"
+ 
+ "$(OUTDIR)\mod_ssl.so" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+@@ -509,6 +521,10 @@
+ 
+ "$(INTDIR)\ssl_engine_mutex.obj" : $(SOURCE) "$(INTDIR)"
+ 
++SOURCE=.\ssl_engine_ocsp.c
++
++"$(INTDIR)\ssl_engine_ocsp.obj" : $(SOURCE) "$(INTDIR)"
++
+ 
+ SOURCE=.\ssl_engine_pphrase.c
+ 
+@@ -575,6 +591,11 @@
+ "$(INTDIR)\ssl_util_ssl.obj" : $(SOURCE) "$(INTDIR)"
+ 
+ 
++SOURCE=.\ssl_util_ocsp.c
++
++"$(INTDIR)\ssl_util_ocsp.obj" : $(SOURCE) "$(INTDIR)"
++
++
+ SOURCE=.\ssl_expr_parse.y
+ 
+ !IF  "$(CFG)" == "mod_ssl - Win32 Release"

@@ -1,0 +1,40 @@
+
+#use wml::vsi area=title page=home
+
+<title>Community Resources</title>
+
+<h1>
+<a href="tower.html">
+Tower Construction
+</a>
+</h1>
+
+<h2>
+Conduit and Cabinets
+</h2>
+
+
+<div align=left>
+
+The tower wiring consists of one 120VAC utility circuit, for the WISP WiFi equipment, and multiple conduit and
+control cables. The initial plan calls for a total of nine such signal and control cables; two LMR-600 and one
+RG-11 coaxial cable, one 12VDC six conductor control cable for the remote antenna switch, one 24VDC eight
+conductor control cable for the antenna rotator, and four Ethernet Cat5E cables.
+<p>
+An electrical cabinet mounted on the house wall will be connected to a cabinet at the base of the tower by
+four runs of PVC conduit: one 1-1/4" conduit run for the 120VAC power, and three 2-1/2" conduit runs for the
+signal and control cables. Initially only two of those three will be used, with one as a spare.
+
+<h3>Buried Conduit</h3>
+
+<p>
+<img src="tower/conduit_trench/DSC_0002.JPG" alt="conduit" style="float:left" border="0" hspace=10 vspace=10>
+<img src="tower/conduit_trench/DSC_0001.JPG" alt="conduit" style="float:center" border="0" hspace=10 vspace=10>
+<img src="tower/conduit_trench/DSC_0004.JPG" alt="conduit" style="float:right" border="0" hspace=10 vspace=10>
+<div style="clear:both;"></div>
+
+<h3>Wall Cabinet</h3>
+
+
+
+</div>

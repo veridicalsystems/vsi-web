@@ -1,0 +1,13 @@
+diff -r -u ./modules/ssl/ssl_util_ocsp.c ..\httpd-2.2.8/modules/ssl/ssl_util_ocsp.c
+--- ./modules/ssl/ssl_util_ocsp.c	2008-04-09 13:40:04.074980200 -0400
++++ ..\httpd-2.2.8/modules/ssl/ssl_util_ocsp.c	2008-04-09 15:19:35.144444800 -0400
+@@ -31,7 +31,7 @@
+     bio = BIO_new(BIO_s_mem());
+ 
+     BIO_printf(bio, "POST %s%s HTTP/1.0\r\n"
+-               "Host: %s:%d\r\n"
++               "Host: %s:%d\r\nContent-Type: application/ocsp-request\r\n"
+                "Content-Length: %d\r\n"
+                "\r\n", 
+                uri->path, uri->query ? uri->query : "",
+ 

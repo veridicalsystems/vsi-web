@@ -1,0 +1,97 @@
+
+#use wml::vsi area=title page=home
+
+<title>PV System Historical Usage and Conservation</title>
+
+<h1>
+<a href="index.html">
+Photo-voltaic Power Generation System
+</a>
+</h1>
+
+<h2>Historical Usage and Conservation Opportunities</h2>
+
+</p>
+
+<div align=left>
+
+Estimating annual electric power consumption should be easy: just look at the
+electric utility bills for a twelve month period.
+<p>
+For a number of reasons it wasn't that easy:
+<ul>
+  <li>Our electric utility, Potomac Edison (First Energy) often goes several months between
+    meter readings, and their "estimated" readings can be wildly inaccurate.
+    <p>
+  </li>
+  <li>
+    We recently (within the past year) replaced a vintage air conditioner and heat pump
+    with two ground sourced heat pump systems. The existing oil furnace was (hopefully)
+    relegated to backup status (the house also has three wood stoves, further complicating
+    the heating picture). Preliminary measurements indicated that both
+    heating and cooling the entire building year-round would consume less electricity than
+    just cooling with the older air-source air conditioner, but without a full twelve months data
+    it's difficult to know for sure.
+    <p>
+  <li>
+    We recently replaced a conventional electric resistance hot water heater with a hot water
+    heat pump (HWHP), and didn't have enough operational history to estimate the annual
+    usage of the HWHP. Both ground sourced heat pumps also provide hot water via a "desuperheater"
+    arrangement.
+    <p>
+  </li>
+  <li>
+    An unusually large number of computer systems were powered on for extended periods for some one-time
+    testing. For instance, one rack of mostly customer owned equipment was drawing 7.5 amps
+    continuously for a period of several months, enough to really show up on the Potomac Edison
+    bills.
+    <p>
+  <li>
+    Spot testing of individual appliances showed that the three portable dehumidifiers that saw
+    fairly frequent use were consuming a lot of electricity, more than the old hot water heater.
+    With the new ground sourced heat pump running more or less continuously in the summer months
+    no additional dehhumidification appears to be necessary. So far this summer (as of mid July)
+    no portable dehumidifiers have been utilizied.
+    <p>
+  </li>
+  <li>
+    A new wing was recently added to the house. It was far more heavily insulated than the rest of the
+    building, and had top of the line energy efficient windows. A decision was made not to provide separate
+    active cooling or heating, on the presumption that natural air exchange with the existing structure
+    would be sufficient. As a precaution a radiant floor system was installed on the lower level.
+    <p>
+    The downstairs room also has three ceiling fans. So far that presumption appears to have been
+    correct and the radiant floor system has seen only occasional use.
+  </li>
+</ul>
+
+In the year prior to specifying the PV system (2011) the total electric consumption was roughly
+22,000 KWh. Looking at earlier years and attempting to adjust for the various factors noted above
+left us with a guesstimate of about 18,000 KWh per year.
+<p>
+During the process of quantifying past electric consumption levels we also were on the alert for
+any opportunities for additional convervation. Short of dramatic life style changes, that is -- we're
+neither masochists nor
+sufficiently noble to voluntarily self-inflict any significant hardships. Unfortunately we saw few opportunities
+for easy gains. The building has long since been converted to conventional and compact fluorescent
+lighting. we're reasonably well disciplined at turning off unused lights and appliances.
+The conventional air conditioner and heat pump have been replaced with ground sourced
+heat pumps and the conventional electric hot water heater with a hot water heat pump. In winter
+we have the capability of heating with wood, with three air-tight wood stoves and (most winters)
+an ample supply of firewood (note the issue of switching between wood stove and heat pump heating
+is a complex topic in its own right).
+<p>
+We have also invested a non-trivial amount of effort in improving the insulation of the building,
+including a whole-house leakage and thermal imaging test. The 70s vintage structure does have a
+fairly high level of air infiltration. Over a period of years significant additional fiberglass
+insulation has been added to the attic floors, unfortunately there are no non-disruptive options for
+improving the insulation in the 2x4 platform framed exterior walls which have (real) stucco siding.
+<p>
+Constant operation appliances -- a freezer, two refridgerators, radon fan, and some 7x24 computer
+gear -- were individually measured. A high efficiency server (SSD drives and Intel "Atom" processor)
+was acquired to handle some critical network services, but we concluded that the consumption levels
+of the freezers and refridgerators was not high enough to cost justify replacemment (a second freezer
+usually remains unused). Our measurements did show that the three portable dehumidifiers used an astonishing
+amount of electricity; one was replaced and we are making a conscious effort to minimize their use
+(so far this summer of 2012 none of the portable dehumidifiers have been used).
+</div>

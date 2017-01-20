@@ -1,0 +1,212 @@
+  
+   MEP802A with Inova Tech autostart board 
+   Wiring from MEP802A generator to basement wall east
+
+                     start/run TB-3 __J90-A_____________________ 
+                                                                \
+     A                      B+ TB-2 __J90-B_________________    |
+     m                                                      \   |
+     p              run signal TB-4 __J90-C_____________    |   |
+     h                                                  \   |   |
+     e          aux fuel pump J11-1 ________________    |   |   |
+     n                                              \   |   |   |
+     o           ground TB-1 (TB-9) __J90-E_____    |   |   |   |
+     l                                          \   |   |   |   |
+                         -not used- x_______    |   |   |   |   |
+                                            \   |   |   |   |   |
+					  [   | E | D | C | B | A ]	J91: Amphenol connector
+                                            ^   ^   ^   ^   ^   ^	at generator		outside
+                                            ------------------------------------------------------------
+       LED- S-1                             ^   ^   ^   ^   ^   ^	to generator		basement
+         \   |      ground                  |   |   |   |   |   |
+         |   |      block                   x   |   |   |   |   |
+       [   |   |   |   |   |   ]          [   |  5|  4|  3|  2|  1] 	A: 6 pole terminal block
+                     |   \   \__________________/   |   |   |   |
+                  M-2|    \                         |   |   |   |
+          oTo     M-4|     \________________      [ : | : | : | : ] 	Fuse block 5A fuses
+      I-1|   |I-2    |                      \       |   |   |   |
+         |   |       |                      |       |   |   |   |	*LEDs:
+         |   |6      |_oTo_____         4   |       |5  |3  |1  |2	    1 B+ 24VDC power	    RED
+         |   |*      |         \     ___*___|       |*  |*  |*  |*	    2 MEP run control	    YEL
+         |   |       |_oTo__ M-3\   |+ LED -|       |   |   |   | 	    3 MEP run indication    BLU
+         |   |              \   |   |       |      S-2  |   |   |	    4 XW run indication     WHT
+         |   |           M-1|   |   |       |           |   |   | 	    5 aux fuel pump	    BRN
+         \   \_________>    |   |   | <     |    _______/   |   |	    6 run inhibit	    loose
+          \_________        |   |   |  \    |   /         __/   |           - ground		    GRN	
+                    \       |   |   |  |    |   |        /      |
+  [   |   |   |   |  5|  6|  7|  8|  9| 10| 11| 12| 13| 14|   | 16] 	X: 20 pole terminal block to AGS
+                        \               \__/____________/       
+                         \________________/           
+                           				X-11, X-13 connected internally in AGS
+							14	NO contact of Relay 1
+							16	common contact of Relay 1
+---------------- 
+    TB	Inovatech autostart board in generator
+  	TB-3	remote start signal, connect to +24VDC to start
+  	TB-4	run signal from generator (oil pressure)
+
+    KEXT	separate relay unit supplied by Inovatech with capacitor,
+		resistor, diodes for time delay function
+		there are four external connections
+	KEXT-1	to K1-11 (lead that used to run to K8-12 terminal)
+	KEXT-2	TB-10
+	KEXT-3	-not used-
+	KEXT-4	TB-2 (+24VDC)
+	KEXT-5	K8-12
+	KEXT-6	-not used-
+	KEXT-7	-internal connection-
+	KEXT-8	-internal connection-
+ 
+    Connections on Inova	Connections on MEP802A	Connections to basement
+    autostart board
+    ------------------------	----------------------	-----------------------
+    TB  1  0V ground		A1 - GND		
+    TB  1			jumper to TB 9
+    TB  2  constant +24VDC (B+)	S1-6 or S2-2		
+    TB  2			KEXT-4
+    TB  2						J90-B -> J91-B  -> A-2
+    TB  3  remote start signal				J90-A -> J91-A	-> A-1
+  	   (not ground!)
+    TB  4  oil/heat		K20-A			
+    TB  4						J90-C -> J91-C  -> A-3
+    TB  5  pre-heat		S1-1
+    TB  6  run/prime		S1-3			
+    TB  7  aux fuel		S1-5				 
+    TB  8  start		S1-7
+    TB  9  relay COM					J90-E -> J91-E	-> A-5
+    TB  9  			jumper to TB 1
+    TB 10  relay on (NO)	KEXT-2
+ 
+    KEXT-1 			K1-11 (loose lead)
+    KEXT-2			TB-10
+    KEXT-4			TB-2
+    KEXT-5			K8-12
+ 
+    J11-1	 aux fuel pump power				 J91-D	-> A-4
+
+    DIP switch settings
+
+    1	Aux fuel		on	enable aux fuel
+    2	Warm up			on	300 sec (5 min)
+    3	cool down		off	N/A, 360 sec (6 min)
+    4	preheat			off	vary by ambient temp
+    5	fixed time		off	(N/A)
+
+    LEDs on board
+
+	o	o	o	o	o	o
+      REMOTE   OIL/   ETHER    RUN     DAY    START
+      START    TEMP    PRE    PRIME    TANK
+                       HEAT            AUX
+                                       FUEL
+  
+    Note the Xantrex XW AGS is programmed for a 30 sec cool down
+    The MEP802A operator manual specifies 5 min warm up, 5 min cool down
+
+---------------- 
+    J90	6 pin Amphenol connector between control box and rest of generator
+	J90-A	start/run signal			TB-3 - J90-A - J91-A - A-1
+	J90-B	constant B+				TB-2 - J90-B - J91-B - A-2
+	J90-C	generator run signal (B+)		TB-4 - J90-C - J91-C - A-3
+	J90-D	-not used-			
+	J90-E	ground					TB-1 - J90-E - J91-E - A-5
+	J90-F	-not used-
+
+---------------- 
+    J91	6 pin Amphenol connector on outside of generator for generator control wiring
+	J91-A	start/run signal		YEL	A-1
+	J91-B	constant B+			RED	A-2
+	J91-C	generator run signal (B+)	BLU	A-3
+	J91-D	aux fuel pump			BRN	A-4
+	J91-E	ground				GRN	A-5
+	J91-F	-not used-			WHT
+ 
+----------------
+    A	fuse block and 6 pole terminal strip in basement
+	A-1	start/run signal	fused 5A	A
+	A-2	constant B+ 		fused 5A	B
+	A-3	run signal (B+)		fused 5A	C
+	A-4	aux fuel power		fused 5A	D	tapped from J11-1 at pump
+	A-5	ground					E
+	A-6	-not used-
+
+----------------
+    X	Xantrex XW AGS
+
+	AGS Type 8 generator start (two wire)
+	X-10	constant +24VDC (jumper to X-14)
+	X-11	Generator common/ground
+	X-12	Generator run signal (B+) input		(from hour meter)
+	X-13	Generator run signal (B+) return (internally connected to X-11)
+	X-14	Relay 1 NO				(should be fused 5A)
+	X-16	Relay 1 common				(not ground!)
+
+	transfer switch safety lockout, NO switch
+	X-5	External shutdown input +24VDC
+	X-6	External shutdown return (gnd)
+
+	for manual start indoors:
+	X-7	External manual on input (NO momentary)
+	X-8	External manual off input (NO momentary)
+	X-9	External on/off LED indicator
+	X-10	Constant +24VDC for external on/off indicator (should be fused 5A)
+	X-11	External on/off LED return
+
+---------------- 
+    I	NC interlock on transfer switch handle
+  	I-1	signal
+  	I-2	common
+  
+---------------- 
+    S	electric solenoid valve at 500gal tank in fuel shed
+  	S-1	+24VDC run
+  	S-2	0V common
+  
+---------------- 
+    M	Manual start/stop switch under transfer switch
+  	M-1	momentary close for run		BLK
+  	M-2	common for run switch		YEL
+  	M-3	momentary close for stop	RED
+  	M-4	common for stop switch		GRN
+ 	(M-2 and M-4 could share a lead)
+
+----------------
+    LED	status indicator lights (see ledlabel.odt)
+	In aluminum box with six conductor cable and one loose lead
+	Lead	Label				Light	Reference	Conductor
+	LED-1	B+ 24VDC power			green	A-2	J91-B	RED
+	LED-2	generator run control		green	A-1	J91-A	YEL
+	LED-3	generator run indication	green	A-3	J91-C	BLU
+	LED-4	XW run indication		green	X-9		WHT
+	LED-5	aux fuel pump			amber	A-4	J91-D	BRN
+	LED-6	run inhibit			red	X-5		tbd (loose lead)
+		ground (-)				ground block	GRN
+
+----------------
+connections
+
+S1-1	TB-5	
+S1-3	TB-6
+S1-5	TB-7						
+S1-7	TB-8
+S1-7	TB-9
+K8-12	KEXT-5
+K1-11	KEXT-1
+	TB-3	J90-A	J91-A	A-1	X-16
+S2-2	TB-2	J90-B	J91-B	A-2	X-14			constant +24VDC (B+)
+K20-A	TB-4	J90-C	J91-C	A-3	X-12			generator run signal
+J11-1			J91-D	A-4		S-2		solenoid +
+A1-GND	TB-1	J90-E	J91-E	A-5	X-11	(jumper to TB-9)
+
+			  		X-5	I-1		external shutdown return
+					X-6	I-2		external shutdown common
+
+					X-7	M-3		start momentary switch NO
+					X-8	M-1		stop momentary switch NO
+					X-10			(jumper to X-14)
+					X-11	M-2,M-4		start/stop common, ground
+						S-2		solenoid common
+
+
+	/mnt/nfs/local/docs/House/PV/MEP802A/autostart/genwiring.txt
+

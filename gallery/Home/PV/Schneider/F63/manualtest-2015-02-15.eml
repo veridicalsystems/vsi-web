@@ -1,0 +1,224 @@
+Return-Path: <no-reply@marq3.net>
+Received: from 192.168.111.116 (combox [192.168.111.116])
+	by opensslfoundation.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with SMTP id t1FM0DfA008843
+	for <marquess@marq3.net>; Sun, 15 Feb 2015 17:00:13 -0500
+Date: Sun, 15 Feb 2015 17:00:13 -0500
+Message-Id: <201502152200.t1FM0DfA008843@opensslfoundation.net>
+From: no-reply@marq3.net
+Sender: no-reply@marq3.net
+To: marquess@marq3.net
+Subject: Fault Report
+Mime-Version: 1.0;
+Content-Type: text/html; charset="ISO-8859-1";
+Content-Transfer-Encoding: 7bit;
+X-Spam-Status: No, score=2.7 required=8.0 tests=BAYES_00,FSL_HELO_BARE_IP_2,
+	HTML_MESSAGE,MIME_HTML_ONLY,MISSING_DATE,MISSING_MID,TVD_RCVD_IP,TVD_RCVD_IP4
+	autolearn=no version=3.3.2
+X-Spam-Level: **
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on euphoria.soho
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Conext ComBox Fault Report</title>
+
+<style type="text/css">
+body { background: #FFFFFF }
+
+pre {
+ background: #EEEEEE;
+ padding-top: 10px;
+ padding-bottom: 10px;
+ padding-left: 10px;
+ padding-right: 10px;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ margin-left: 10px;
+ margin-right: 10px;
+ border-width: 1px;
+ border-style: solid;
+ border-color: #bebab0;
+}
+
+h1 {
+color: #009130;
+}
+
+h2 {
+color: #009130;
+}
+
+hr {
+color: #009130;
+}
+
+report {
+ background: #EEEEEE;
+ padding: 0.5em 1em;
+ margin-left: 40px;
+ margin-top: 40px;
+ margin-right: 20px;
+ margin-bottom: 20px;
+ border-width: 1px;
+ border-style: solid;
+ border-color: #bebab0;
+ font-family: Arial,Sans-Serif;
+}
+
+report-header {
+ margin-top: 40px;
+ margin-bottom: 40px;
+ font-variant: small-caps;
+ font-size: 8pt;
+ text-align: center;
+}
+
+report-footer {
+ font-variant: small-caps;
+ font-size: 8pt;
+ margin-top: 40px;
+ margin-bottom: 40px;
+ text-align: center;
+}
+
+contact-info {
+ margin-top: 50px;
+ margin-bottom: 50px;
+ text-align: center;
+}
+
+report-contents {
+ border-width: 1px;
+ border-style: dashed;
+ border-color: #bebab0;
+ padding-bottom: 20px;
+ margin-top: 20px;
+}
+
+logo {
+ text-align: right;
+}
+
+field {
+ margin-left: 20px;
+ margin-top: 20px;
+}
+
+field-name {
+ font-weight: bold;
+ display: inline-block;
+ left: 10px;
+ width: 200px;
+ padding-left: 5px;
+ padding-right: 5px;
+ padding-top: 5px;
+ padding-bottom: 5px;
+}
+
+field-value {
+ font-family: "Courier New",monospace;
+ width: 400px;
+ padding-left: 5px;
+ padding-right: 5px;
+ padding-top: 5px;
+ padding-bottom: 5px;
+ border-style: none;
+ border-width: 1px;
+ border-color: #bebab0;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="report">
+
+    <div class ="logo">
+        <img src="http://www.schneider-electric.ca/gc_1_0/images/structure/signature.gif"
+         alt="Schneider Electric" />
+    </div>
+
+    <h1>Conext ComBox Fault Report </h1>
+    <div class="field">
+        <span class="field-name">Device ID:</span>
+        <span class="field-value">cb-B12884021</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">Device Name:</span>
+        <span class="field-value">ComBox-B12884021</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">MAC:</span>
+        <span class="field-value">00-00-54-FE-07-BB</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">FGA:</span>
+        <span class="field-value">865-1058</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">SID:</span>
+        <span class="field-value">150-0279</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">Serial Number:</span>
+        <span class="field-value">B12884021</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">Software Version:</span>
+        <span class="field-value">Ver02.01BN0673</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">Build Date:</span>
+        <span class="field-value">2014-09-19_10-40-25</span>
+    </div>
+
+    <div class="field">
+        <span class="field-name">System Local Time:</span>
+        <span class="field-value">2015/02/15 16:59:28</span>
+    </div>
+
+    <div class="report-header">
+        Report Starts
+        <hr/>
+    </div>
+
+
+
+
+<pre style="word-wrap:break-word">
+Local Time: 2015/02/15 16:59:29
+Device Name: XW6848-01
+Unique Identifier: 1626778
+Firmware Version: V02.00.00-0020
+FGA #: 865-6848-01
+Warning Detail:
+
+W63 : AC Overload
+
+Cause: Excessive load on the AC output. Solution: Check for loads above the inverter's capacity. Turn off some loads if necessary. 
+</pre>    <div class="report-footer">
+        <hr/>
+        Report Ends
+    </div>
+
+    <div class="contact-info">
+        <p>Please contact Schneider Electric Customer Support for more information:</p>
+
+        <address>web: <a href="http://www2.schneider-electric.com/sites/corporate/en/support/operations/local-operations/local-operations.page">Schneider Electric Customer Support</a></address>
+
+    </div>
+
+</div>
+
+</body>
+</html>
