@@ -15,17 +15,17 @@
   <tr>
     <td rowspan="2" valign="top" bgcolor="#b0b0b0">
       <br>
-      <b><big><a href="/">Home</a></big></b><br>
+      <b><big><a href="../../../../../index.html">Home</a></big></b><br>
       <p><hr></p>
       <b><big>About VSI</big></b><br>
-      &nbsp;<a href="/what.html">What&nbsp;We&nbsp;Do</a><br>
-      &nbsp;<a href="/who.html">Who&nbsp;We&nbsp;Are</a><br>
-      &nbsp;<a href="/contact.html">Contact&nbsp;Info</a>
+      &nbsp;<a href="../../../../../what.html">What&nbsp;We&nbsp;Do</a><br>
+      &nbsp;<a href="../../../../../who.html">Who&nbsp;We&nbsp;Are</a><br>
+      &nbsp;<a href="../../../../../contact.html">Contact&nbsp;Info</a>
       <p><hr></p>
       <b><big>Resources</big></b><br>
-      &nbsp;<a href="/blog/">Blog</a><br>
-      &nbsp;<a href="/data/">Data&nbsp;Archives</a>
-      &nbsp;<a href="/export/">Export</a>
+      &nbsp;<a href="../../../../../blog/index.html">Blog</a><br>
+      &nbsp;<a href="../../../../../data/index.html">Data&nbsp;Archives</a>
+      &nbsp;<a href="../../../../../export/index.html">Export</a>
       <p><br></p>
     </td>
     <td rowspan="2" bgcolor="#7f7f7f"><font size="1">&nbsp;</font>
@@ -49,21 +49,21 @@ breaker on both service entrance panels. As a result the waveforms are more comp
 for utility recloser events (which are harder to simulate!).
 <p>
 The F63 corresponds to the glitch evident near the right side of the
-<a href="Event-233.pdf">graphs</a> (15:32:30).
+<a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/Event-233.pdf">graphs</a> (15:32:30).
 Channel C is one 240V AC leg, Channel D the other. Note that at no point in the hour
 preceeding this F63 event did the load on either leg exceed 19A, and in fact even the
 transients are less than the nominal 28A load capacity represented by the fine dotted lines
 (and a lot less than the ~60A peak seen with inrush current for the 3/4HP well pump that does not
-trigger F63 events). The Conext Combox <a href="event233-2015-02-15.xls">logs<a/A> corresponding
+trigger F63 events). The Conext Combox <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/event233-2015-02-15.xls">logs<a/A> corresponding
 to this event show a load of zero before (the Combox, unlike the SCP, incorrectly reports
 exported power) and no more than 2900W/25A afterwards.
 <p>
 As a separate experiment I disconnected the DLP again and noted that the load as shown by the SCP
 was 950W. I threw the upstream (AC1) breaker and the XW+6848 immediately reported a W63 warning which
 could not be cleared. It did successfully sustain the ~1kW load in inverter mode, but only
-with the W63 warning asserted. The Conext Combox <a href="manualtest-2015-02-15.xls">logs<a/A> corresponding
+with the W63 warning asserted. The Conext Combox <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/manualtest-2015-02-15.xls">logs<a/A> corresponding
 to this event (16:59:29) show a load of 800W/10A before and no more than 1800W/15A while inverting. The
-PQ analyzer <a href="manualtest-2015-02-15-graphs.pdf">shows</a> that low load as well.
+PQ analyzer <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/manualtest-2015-02-15-graphs.pdf">shows</a> that low load as well.
 I was unable to clear the W63 until the XW+6848 returned to AC pass-through mode.
 <p>
 The XW6048 that this XW+6848 replaced could (and frequently did) sustain inverter mode
@@ -76,11 +76,11 @@ have to see what Schneider tech support wants.
 <a name="2015-02-19"></a>
 UPDATE 2015-02-19<br>
 I had an extended discussion with a Schneider technician. He wanted photos of the wiring and -- of
-course -- a reset to factory defaults. I took a shot of the terminations <a href="xw-wiring-1.jpg">inside</a>
-the XW+6848 itself, one <a href="xw-wiring-2.jpg">underneath it</a>, and one of the <a href="xw-wiring-3.jpg">
+course -- a reset to factory defaults. I took a shot of the terminations <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/xw-wiring-1.jpg">inside</a>
+the XW+6848 itself, one <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/xw-wiring-2.jpg">underneath it</a>, and one of the <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/xw-wiring-3.jpg">
 Power Distribution Panel</a>.
 <p>
-Those connections were tightened with <a href="../AGS/XW+6848-torque.jpg">torque wrench</a><small><sup>1</sup></small>;
+Those connections were tightened with <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/AGS/XW+6848-torque.jpg">torque wrench</a><small><sup>1</sup></small>;
 something that is
 hard to prove photograhically and that professional electricians laugh at me for doing<sup>2</sup></small>.
 <p>
@@ -103,12 +103,12 @@ During the AGS saga I consulted with three different EEs who were interested in 
 electrical noise issues (and indeed our utility power here is "dirty"), and suggested use of an
 EMC/EFI filter such as
 <a href="http://schaffner.com/en/products/datasheet-low-res/product/fn-350-single-phase-emcemi-filter-for-motor-drives.pdf">
-this</a>. I purchased one rated 55A, <a href="emc-filter.jpg">seen here</a>, but since the inverter was still under warranty
+this</a>. I purchased one rated 55A, <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/emc-filter.jpg">seen here</a>, but since the inverter was still under warranty
 I didn't want to install it without the approval of the vendor, Schneider. I asked about that several times and never received
 a clear response, and in the meantime the determination was made that the AGS problem lay elsewhere.
 <p>
 Mysterious software glitches now seem to be an issue again, and I'd really like to find a way to prevent recurrences. This
-filter will fit in the <a href="xw-wiring-2.jpg">space under</a> the XW+6848 inverter. I will try again to get a
+filter will fit in the <a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/xw-wiring-2.jpg">space under</a> the XW+6848 inverter. I will try again to get a
 yeah-or-nay answer from Schneider, and if they don't object I will install it and hope it will reduce the need for
 factory resets" and spending quality time standing in front of the SCP<small><sup>3</sup></small> re-keying the
 <a href="../xantrex.txt">complex configuration</a>.
@@ -118,7 +118,7 @@ factory resets" and spending quality time standing in front of the SCP<small><su
 UPDATE 2015-02-25<br>
 After badgering Schneider tech support for several days I finally received an E-mail from them stating that they
 had no objection to installation of the aforementioned EMC/EFI filter. I was able to install that
-<a href="xw-wiring-4.jpg">fairly neatly</a> without an outage
+<a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/F63/xw-wiring-4.jpg">fairly neatly</a> without an outage
 by switching to generator power to kill the AC1 input circuit. I may not know for a long time if it makes a
 difference.
 <p>
@@ -126,7 +126,7 @@ _
 <p>
 <small>
 <sup>1</sup> That photo was taken at the time of the initial installation of the new XW+6848, during the
-<a href="../AGS/index.html">AGS ordeal</a>. It doesn't prove I correctly <em>used</em> the torque wrench,
+<a href="http://veridicalsystems.com/gallery/Home/PV/Schneider/AGS/index.html">AGS ordeal</a>. It doesn't prove I correctly <em>used</em> the torque wrench,
 but does prove I had one.
 <p>
 <sup>2</sup> With expensive equipment like this that has warranty support I try very hard to do as much as I can

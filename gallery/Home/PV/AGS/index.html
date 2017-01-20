@@ -15,17 +15,17 @@
   <tr>
     <td rowspan="2" valign="top" bgcolor="#b0b0b0">
       <br>
-      <b><big><a href="/">Home</a></big></b><br>
+      <b><big><a href="../../../../index.html">Home</a></big></b><br>
       <p><hr></p>
       <b><big>About VSI</big></b><br>
-      &nbsp;<a href="/what.html">What&nbsp;We&nbsp;Do</a><br>
-      &nbsp;<a href="/who.html">Who&nbsp;We&nbsp;Are</a><br>
-      &nbsp;<a href="/contact.html">Contact&nbsp;Info</a>
+      &nbsp;<a href="../../../../what.html">What&nbsp;We&nbsp;Do</a><br>
+      &nbsp;<a href="../../../../who.html">Who&nbsp;We&nbsp;Are</a><br>
+      &nbsp;<a href="../../../../contact.html">Contact&nbsp;Info</a>
       <p><hr></p>
       <b><big>Resources</big></b><br>
-      &nbsp;<a href="/blog/">Blog</a><br>
-      &nbsp;<a href="/data/">Data&nbsp;Archives</a>
-      &nbsp;<a href="/export/">Export</a>
+      &nbsp;<a href="../../../../blog/index.html">Blog</a><br>
+      &nbsp;<a href="../../../../data/index.html">Data&nbsp;Archives</a>
+      &nbsp;<a href="../../../../export/index.html">Export</a>
       <p><br></p>
     </td>
     <td rowspan="2" bgcolor="#7f7f7f"><font size="1">&nbsp;</font>
@@ -63,23 +63,23 @@ and configured to log relevant status parameters at five second intervals (the f
 possible). The generator itself was disabled by disconnecting power from the internal DC bus used by
 internal remote start controller and the Xantrex AGS was configured to support automatic generator
 starts triggered by either battery voltage or high inverter loads. The complete configuration of
-the AGS and the XW 6048 hybrid inverter are recorded in text file form <a href="xantrex.txt">here</a>.
+the AGS and the XW 6048 hybrid inverter are recorded in text file form <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/xantrex.txt">here</a>.
 <p>
 After a week the logs were pulled (manually by removing the SD card; the web based log viewer in the
 Combox is worthless) and analyzed. For the period 2014-08-22 through 2014-08-31 inclusive, there were
 16 false starts; 12 on the 22nd and one each on the 23rd, 25th, 27th, and 31st. Inverter mode was
 logged only one time during that entire week, on the 31st corresponding to that false start (and only
 for 15 seconds). These
-logs can be seen <a href="logs/">here</a>; both the raw CVS logs and selected content converted to
+logs can be seen <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/logs/">here</a>; both the raw CVS logs and selected content converted to
 spreadsheet format.
 <h3>Gory Details</h3>
 The AGS and XW 6048 were upgraded to the latest available firmware before this latest set of logs was obtained.
 <p>
 The installation of the AGS doesn't appear to be suspect, but the entire wiring scheme from the generator
 internals to the AGS unit is documented in
-<a href="genwiring.txt">excruciating detail</a>. For ease
+<a href="http://veridicalsystems.com/gallery/Home/PV/AGS/genwiring.txt">excruciating detail</a>. For ease
 of troubleshooting multiple 24V LED indicator lights were added to show all relevant control signals. The AGS
-interconnections and indicator lights can be seen in this <a href="../../MEP802A/wallpanel1.jpg">photo</a>.
+interconnections and indicator lights can be seen in this <a href="http://veridicalsystems.com/gallery/Home/MEP802A/wallpanel1.jpg">photo</a>.
 Note that once it became clear that debugging the AGS was going to be a non-trivial exercise I purchased
 a second Xantrex SCP (System Control Panel) accessible from the location where the AGS and wiring were
 installed<small><sup>2</sup></small>.
@@ -120,7 +120,7 @@ status parameters as well, though the generator starts are real enough.
 Schneider/Xantrax tech support has asked for an analysis of the logs (which were also provided to them in full). So
 here's my analysis of a representative false start on 08-27. I picked that day because there was only the
 one false start that appears to be most representative of such events (08-25 is comparable). The raw log file is
-<a href="logs/0827.cvs">0827.CVS</a> and the relevant records extracted to Excel spreadsheet format is
+<a href="http://veridicalsystems.com/gallery/Home/PV/AGS/logs/0827.cvs">0827.CVS</a> and the relevant records extracted to Excel spreadsheet format is
 aa href="
 <a href="http://solar.schneider-electric.com/wp-content/uploads/2014/05/503-0247-01-01_RevA.1_Modbus_Map_AGS_Device.pdf">AGS</a>
 and
@@ -167,7 +167,7 @@ to the SE, and that to the main disconnect.
 Schneider/Xantrex tech support asks periodically about the Xanbus (Xantrex proprietary version of Modbus) network cabling.
 The Xantrex documentation specifies a maximum length of 131' (40m) for the entire network. Recently they also began
 documenting a requirement that no single segment (between any two XW devices) be less than 6.5' (2m) in length. The
-network topology is as follows (also at the end of the detailed <a href="xantrex.txt">configuration document</a>).
+network topology is as follows (also at the end of the detailed <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/xantrex.txt">configuration document</a>).
 <pre>
 Xanbus wiring	T == RS485 120ohm terminator
 		Cat5e, minimum cable length 6.5' 2m), max total network length 131' (40m)
@@ -199,7 +199,7 @@ I will update this section with any new information.
 <p>
 UPDATE 2014-09-04: Xantrex tech support has concluded that the AGS device is defective and will replace it
 even though I can't find the proof of purchase paperwork. They wanted the paper sticker bar code on the
-<a href="AGSback.jpg">back</a>.
+<a href="http://veridicalsystems.com/gallery/Home/PV/AGS/AGSback.jpg">back</a>.
 <p>
 UPDATE 2014-09-05: I received a call from a new person at Schneider/Xantrex who says the logs indicate a problem
 with the AGS or XW 6048 hardware. I sure hope it's the former as replacing the XW 6048 would be a pain. He
@@ -209,7 +209,7 @@ UPDATE 2014-09-15: The new AGS was received on Saturday. It came pre-loaded with
 3.00.00 BN 2. When installed the Conext Combox didn't recognize it but after digging around on the Schneider
 web site I found a very new version Conbox firmware upgrade, Ver02.00BN0656. On installing that the Combox did
 recognize the new AGS. Unfortunately the new AGS is exhibiting exactly the same false start behavior as before.
-It didn't take long to capture one; event <a href="logs/0915.xls">0915.xls</a> occurred only a few
+It didn't take long to capture one; event <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/logs/0915.xls">0915.xls</a> occurred only a few
 minutes after I enabled
 Automatic mode on Monday morning. The generator was enabled and connected to the AGS up so there was an actual
 start. As before the
@@ -265,15 +265,15 @@ Combox yet again, to Ver02.01BN0673 which was only released on Sept. 22. The lat
 contact doesn't appear to believe that I'm doing the upgrade properly, so I've prepared some screen shots as
 proof:
 <p>
-A screenshot showing the current Combox <a href="combox-1.png">software version</a> (upgraded earlier today).
+A screenshot showing the current Combox <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/combox-1.png">software version</a> (upgraded earlier today).
 <p>
-A screenshot showing the unzipping of the <a href="shell-1.png">SCP firmware file</a>.
+A screenshot showing the unzipping of the <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/shell-1.png">SCP firmware file</a>.
 <p>
-A screenshot showing the <a href="combox-2.png">start</a> of the upload of that file to the Combox.
+A screenshot showing the <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/combox-2.png">start</a> of the upload of that file to the Combox.
 <p>
-A screenshot showing the <a href="combox-3.png">completion</a> of the upload.
+A screenshot showing the <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/combox-3.png">completion</a> of the upload.
 <p>
-A screenshot showing the <a href="combox-4.png">pick list</a> that does <em>not</em> include the just uploaded firmware version. Note
+A screenshot showing the <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/combox-4.png">pick list</a> that does <em>not</em> include the just uploaded firmware version. Note
 the older "1.06.00 BN 19" still appears as I don't know how to remove it without completely wiping the Combox
 configuration (and anyway the "1.02 BN 13" upgrade was tried first).
 <p>
@@ -283,8 +283,8 @@ The resolution of the firmware upgrade issue was simple once finally known: I wa
 865-1050-01.02_00_00.BN0013.xf0 to 865-1050.02_00_00.BN0013.xf0 (i.e., remove the "-01"). That did the trick.
 <p>
 The new XW+6848 arrived as promised and was installed on 2014-09-27. I did the installation strictly by the book,
-including use of a <a href="XW+6848-torque.jpg">torque wrench</a> for tightening the terminal
-<a href="XW+6848-connections.jpg">connections</a><small><sup>8</sup></small>.
+including use of a <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/XW+6848-torque.jpg">torque wrench</a> for tightening the terminal
+<a href="http://veridicalsystems.com/gallery/Home/PV/AGS/XW+6848-connections.jpg">connections</a><small><sup>8</sup></small>.
 No false starts at first, even with
 "AC Current Level To Start" at 3.0A and "AC Current Trigger Start Delay" at 0.5 minutes to encourage any misbehavior.
 Hurray!! I was starting to be cautiously optimistic about an end to this long ordeal.
@@ -341,7 +341,7 @@ in addition to disconnecting AGS harness leads 5, 6, and 12 as recommended.
 I left the "Exercise" trigger enabled, and this morning I experienced the first exercise event with the
 generator actually connected. Unfortunately the AGS immediately killed the run signal right after asserting it,
 and then continued to repeat those short starts every 115 seconds until I disabled the AGS. This
-<a href="exercise.xls">log extract</a> shows the first few of those abortive starts. I don't know how long it
+<a href="http://veridicalsystems.com/gallery/Home/PV/AGS/exercise.xls">log extract</a> shows the first few of those abortive starts. I don't know how long it
 would have continued those short starts, but if continued for very long that would be pretty rough on the generator.
 <p>
 So, I can't use the AGS for load based starts and I can't use it for periodic exercising. I've not yet seen
@@ -358,8 +358,8 @@ the hardest part of solving this type of problem is just recognizing that there 
 mode problem is assumed to be a consequence of the same bug.
 <p>
 I was was also asked for a photo of the installation. A shot of the
-<a href="../../MEP802A/wallpanel1.jpg">initial AGS installation</a>
-is already on this web page, but I took one of the <a href="wall_panel.jpg">current configuration</a>. Notice it's
+<a href="http://veridicalsystems.com/gallery/Home/MEP802A/wallpanel1.jpg">initial AGS installation</a>
+is already on this web page, but I took one of the <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/wall_panel.jpg">current configuration</a>. Notice it's
 gotten a lot more complex as I struggled to debug the autostart problems; I added more indicator lights and a time
 delay relay in the hope of filtering out some of the shorter false starts<small><sup>10</sup></small>. I've also added
 the Pentametric SoC
@@ -369,7 +369,7 @@ indicators which will require another cast aluminum box as seen to the left of t
 for manual generator stop/start via the SCPs or Combox, with all start triggers disabled, and will be removed
 entirely the first time it misbehaves in that minimal configuration.
 <p>
-I've also posted an <a href="genwiring.txt">ASCII art<small><sup>11</sup></small> wiring diagram</a>
+I've also posted an <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/genwiring.txt">ASCII art<small><sup>11</sup></small> wiring diagram</a>
 corresponding to that current configuration. That is intended for my use and so describes a lot more
 than just the Schneider AGS configuration; it includes the Inova Tech autostart board and the Pentametric
 SoC meter and relay.
@@ -444,7 +444,7 @@ in figuring out and correcting the false start problem I offer the following tho
 	forward inbound connections through the firewalls.
 </ul>
 What I don't want to do is keep "resetting to factory defaults". I've been asked to do that several times now.
-The very detailed <a href="xantrex.txt">configuration</a> must be painstakingly typed in manually, a process
+The very detailed <a href="http://veridicalsystems.com/gallery/Home/PV/AGS/xantrex.txt">configuration</a> must be painstakingly typed in manually, a process
 that takes about twenty minutes during which time the critical loads are without power. I can accept an occasional
 mysterious glitch<small><sup>13</sup></small> in heavily computerized hardware, but such a "reboot" is a last resort
 intervention that is not acceptable on a routine basis.
