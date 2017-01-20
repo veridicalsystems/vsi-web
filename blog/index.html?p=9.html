@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head profile="http://gmpg.org/xfn/11">
+	<title>Speeds and Feeds &rsaquo; The Fickleness of FIPS</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" media="screen,projection" href="http://veridicalsystems.com/blog/wp-content/themes/veryplaintxt/style.css" title="veryplaintxt" />
+	<link rel="stylesheet" type="text/css" media="print" href="http://veridicalsystems.com/blog/wp-content/themes/veryplaintxt/print.css" />
+	<link rel="alternate" type="application/rss+xml" href="http://veridicalsystems.com/blog/feed/" title="Speeds and Feeds RSS feed" />
+	<link rel="alternate" type="application/rss+xml" href="http://veridicalsystems.com/blog/comments/feed/" title="Speeds and Feeds comments RSS feed" />
+	<link rel="pingback" href="http://veridicalsystems.com/blog/xmlrpc.php" />
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://veridicalsystems.com/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://veridicalsystems.com/blog/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='We Have Met the Enemy..' href='http://veridicalsystems.com/blog/we-have-met-the-enemy/' />
+<link rel='next' title='NSS Trickery' href='http://veridicalsystems.com/blog/nss-trickery/' />
+<meta name="generator" content="WordPress 3.8.5" />
+<link rel='canonical' href='http://veridicalsystems.com/blog/the-fickleness-of-fips/' />
+<link rel='shortlink' href='http://veridicalsystems.com/blog/?p=9' />
+
+<style type="text/css" media="all">
+/*<![CDATA[*/
+/* CSS inserted by theme options */
+body{font-family:'times new roman',times,serif;font-size:90%;}
+body div#container { float: left; margin: 0 -200px 2em 0; } body div#content { margin: 3em 200px 0 0; } body div.sidebar { float: right; }
+body div#content div.hentry{text-align:left;}
+body div#content h2,div#content h3,div#content h4,div#content h5,div#content h6{font-family:arial,helvetica,sans-serif;}
+body div#wrapper{max-width:75em;min-width:35em;width:90%;}
+body div.sidebar{text-align:center;}
+/*]]>*/
+</style>
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+
+</head>
+
+<body class="wordpress y2017 m01 d15 h01 single s-y2009 s-m04 s-d19 s-h12 s-category-cryptography s-author-stevem">
+
+<div id="wrapper">
+
+	<div id="header">
+		<h1 id="blog-title"><a href="http://veridicalsystems.com/blog/" title="Speeds and Feeds">Speeds and Feeds</a></h1>
+		<div id="blog-description">Personal Musings of Steve Marquess</div>
+	</div><!-- #header -->
+	
+	<div class="access"><span class="content-access"><a href="#content" title="Skip to content">Skip to content</a></span></div>
+
+<div id="globalnav"><ul id="menu"><li class="page_item_home home-link"><a href="http://veridicalsystems.com/blog/" title="Speeds and Feeds" rel="home">Home</a></li><li class="page_item page-item-18"><a href="http://veridicalsystems.com/blog/about/">About</a></li><li class="page_item page-item-20"><a href="http://veridicalsystems.com/blog/contact/">Contact</a></li></ul></div>
+
+	<div id="container">
+		<div id="content" class="hfeed">
+
+
+			<div id="post-9" class="hentry p1 post publish author-stevem category-cryptography y2009 m04 d19 h12">
+				<h2 class="entry-title">The Fickleness of FIPS</h2>
+				<div class="entry-content">
+<p>&nbsp;<br />
+<h7>(Updated 2015-12-11)</h7><br />
+&nbsp;<br />
+All of my clients seeking FIPS 140-2 validations are concerned about schedule. The elapsed time to the final validation award is usually more important than cost. The biggest element of that timeline is the long hiatus between the test report submission by the test lab to the CMVP, and the time when it is picked out of the inbox for CMVP review.</p>
+<p>That time interval can vary dramatically and capriciously as demonstrated by two recent validations. The test report for #1051 was submitted on 2008-04-28 and validation award was 2008-11-17, approximately 7 months. The test report for #1111 was submitted on 2008-02-29 but the validation award was not until 2009-04-03, approximately 13 months. Quite a difference, roughly half a year, sufficiently long in the latter case to spoil any commercial value of that validation.</p>
+<p>How did the two validated products differ? Here’s the interesting part — both were based on the same source code! Even stranger, the “quick” validation was for source code based delivery and static linking, both well off the beaten path for most validations. The tardy validation was a bog standard binary shared library validation, the whole purpose of which was to quickly obtain a few validated binaries for DoD (the sponsor) while waiting for the source code based validation.</p>
+<p>The FIPS validation process is so shrouded in secrecy that I will never know for sure why the one validation took nearly twice as long. The validations were performed by different test labs, but there was no evidence that I could see of negligence or incompetence on the part of the one test lab. The most likely cause was different reviewers at the CMVP. The CMVP review is (in my opinion) a very subjective process and different reviewers show very distinct preferences in their commentary and requirements for document changes. Interestingly enough the test lab informed me that the NIST reviewer in this case insisted on remaining anonymous; in the past I’ve always been told who was involved.</p>
+<p>So there you have it — a very non-transparent process, anonymous bureaucrats, nearly a 2x difference in validation times for the same software. You pays yer money and you takes yer chances.</p>
+<p>[Update 2015-12-11] An even better example of CMVP capriciousness:</p>
+<p>The &#8220;RE&#8221; validation, an &#8220;Alternative Scenario 1A&#8221; clone of the #1747 validation, was approved November 13 2015 (<a href="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140val-all.htm#2473" title="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140val-all.htm#2473">http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140val-all.htm#2473</a>).</p>
+<p>It was submitted along with its identical twin &#8220;RE&#8221; validation on April 17 2015. The two sets of paperwork differed in only one trivial aspect, &#8220;RE&#8221; in the module name for one versus &#8220;SE&#8221; for the other. Same module, same test lab, same paperwork, submitted together at the same time. A more perfect controlled study could not have been devised on purpose.</p>
+<p>The &#8220;SE&#8221; validation was approved on June 25 (#2398), after a little more than two months (69 calendar days, 48 working days).</p>
+<p>The &#8220;RE&#8221; validation was not approved for almost seven months (210 calendar days, 145 working days). That&#8217;s three times as long for the exact same submission. This is the most striking example yet of CMVP capriciousness.</p>
+<p>Why the wild disparity? Well, probably because the two identical submissions were farmed out to two different reviewers. The review process is notoriously subjective, and in fact we received &#8220;comments&#8221; (requirements for changes) for the &#8220;RE&#8221; validation whereas the &#8220;SE&#8221; one was approved as-is. As a result the two Security Policy documents are no longer identical. That doesn&#8217;t explain the time discrepancy, though, as those &#8220;comments&#8221; weren&#8217;t received until long after &#8220;SE&#8221; had been approved.</p>
+<p>The moral here is that FIPS 140-2 validations are a crapshoot; it&#8217;s impossible to make any reliable predictions on how long any validation action will take or how it will be received. If you have really deep pockets you can submit the same validation multiple times to hedge your bets (as done for the #1051 and #1111 validations discussed above), but for most of us it&#8217;s an open ended gamble: submit, hope, wait, &#8230;</p>
+
+				</div>
+
+				<div class="entry-meta">
+					This was written by <span class="vcard"><span class="fn n">stevem</span></span>. Posted on <abbr class="published" title="2009-04-19T17:08:00+0000">Sunday, April 19, 2009, at 17:08</abbr>. Filed under <a href="http://veridicalsystems.com/blog/category/cryptography/" title="View all posts in Cryptography" rel="category tag">Cryptography</a>. Bookmark the <a href="http://veridicalsystems.com/blog/the-fickleness-of-fips/" title="Permalink to The Fickleness of FIPS" rel="bookmark">permalink</a>. Follow comments here with the <a href="http://veridicalsystems.com/blog/the-fickleness-of-fips/feed/" title="Comments RSS to The Fickleness of FIPS" rel="alternate" type="application/rss+xml">RSS feed</a>.					Both comments and trackbacks are currently closed.
+				</div>
+			</div><!-- .post -->
+
+<div class="comments">
+
+
+</div>
+			<div id="nav-below" class="navigation">
+				<div class="nav-previous">&lsaquo; <a href="http://veridicalsystems.com/blog/we-have-met-the-enemy/" rel="prev">We Have Met the Enemy..</a></div>
+				<div class="nav-next"><a href="http://veridicalsystems.com/blog/nss-trickery/" rel="next">NSS Trickery</a> &rsaquo;</div>
+			</div>
+
+		</div><!-- #content .hfeed -->
+	</div><!-- #container -->
+
+		<div id="primary" class="sidebar">
+			<ul>
+<li id="search-2" class="widget widget_search"><form role="search" method="get" id="searchform" class="searchform" action="http://veridicalsystems.com/blog/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form></li>
+		<li id="recent-posts-2" class="widget widget_recent_entries">		<h3 class='widgettitle'>Recent Posts</h3>
+		<ul>
+					<li>
+				<a href="http://veridicalsystems.com/blog/life-in-a-digital-ghetto/">Life in a Digital Ghetto</a>
+						</li>
+					<li>
+				<a href="http://veridicalsystems.com/blog/of-money-responsibility-and-pride/">Of Money, Responsibility, and Pride</a>
+						</li>
+					<li>
+				<a href="http://veridicalsystems.com/blog/immutability-of-fips/">The Immutability of FIPS</a>
+						</li>
+					<li>
+				<a href="http://veridicalsystems.com/blog/photovoltaic-system/">Photovoltaic System</a>
+						</li>
+					<li>
+				<a href="http://veridicalsystems.com/blog/pain/">Pain</a>
+						</li>
+				</ul>
+		</li>
+<li id="recent-comments-2" class="widget widget_recent_comments"><h3 class='widgettitle'>Recent Comments</h3>
+<ul id="recentcomments"></ul></li>
+<li id="archives-2" class="widget widget_archive"><h3 class='widgettitle'>Archives</h3>
+		<ul>
+			<li><a href='http://veridicalsystems.com/blog/2015/03/'>March 2015</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2014/04/'>April 2014</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2014/03/'>March 2014</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2013/05/'>May 2013</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2011/08/'>August 2011</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2009/07/'>July 2009</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2009/06/'>June 2009</a></li>
+	<li><a href='http://veridicalsystems.com/blog/2009/04/'>April 2009</a></li>
+		</ul>
+</li>
+<li id="categories-2" class="widget widget_categories"><h3 class='widgettitle'>Categories</h3>
+		<ul>
+	<li class="cat-item cat-item-3"><a href="http://veridicalsystems.com/blog/category/cryptography/" title="Cryptography in general and OpenSSL in particular">Cryptography</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://veridicalsystems.com/blog/category/distractions/" title="Various personal interests">Distractions</a>
+<ul class='children'>
+	<li class="cat-item cat-item-5"><a href="http://veridicalsystems.com/blog/category/distractions/construction/" title="Additions to the homestead">Construction</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="http://veridicalsystems.com/blog/category/distractions/metal-illness/" title="Happenings in the machine shop">Metal Illness</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://veridicalsystems.com/blog/category/information-assurance/" title="The strange and bizarre world of information assurance">Information Assurance</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://veridicalsystems.com/blog/category/miscellaneous/" title="Odds and ends">Miscellaneous</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://veridicalsystems.com/blog/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a>
+</li>
+		</ul>
+</li>
+<li id="meta-2" class="widget widget_meta"><h3 class='widgettitle'>Meta</h3>
+			<ul>
+						<li><a href="http://veridicalsystems.com/blog/wp-login.php">Log in</a></li>
+			<li><a href="http://veridicalsystems.com/blog/feed/" title="Syndicate this site using RSS 2.0">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://veridicalsystems.com/blog/comments/feed/" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>						</ul>
+</li>
+
+			</ul>
+		</div><!-- #primary .sidebar -->	<div id="footer">
+		<span id="copyright">&copy; 2017 <span class="vcard"><a class="url fn n" href=""><span class="given-name"></span> <span class="family-name"></span></a></span></span>
+		<span class="meta-sep">&para;</span>
+		<span id="generator-link">Powered by <a href="http://wordpress.org/" title="WordPress">WordPress</a>.</span>
+		<span class="meta-sep">&para;</span>
+		<span id="theme-link"><a href="http://www.plaintxt.org/themes/veryplaintxt/" title="veryplaintxt theme for WordPress" rel="follow designer">veryplaintxt</a> theme by <span class="vcard"><a class="url fn n" href="http://scottwallick.com/" title="scottwallick.com" rel="follow designer"><span class="given-name">Scott</span><span class="additional-name"> Allan</span><span class="family-name"> Wallick</span></a></span>.</span>
+	</div><!-- #footer -->
+<P STYLE="font-size: small; font-style: italic; text-align: center">
+Opinions expressed herein are not necessarily those of Veridical Systems, OpenSSL, DoD, the author's evil twin Skippy, or anyone else possibly including the author himself. 
+</P>
+
+
+</div><!-- #wrapper -->
+
+</body><!-- end transmission -->
+</html>
