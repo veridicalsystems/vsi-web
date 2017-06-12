@@ -1,0 +1,84 @@
+diff -u -r ../=httpd-2.2.11/modules/ssl/ssl_engine_config.c ./modules/ssl/ssl_engine_config.c
+--- ../=httpd-2.2.11/modules/ssl/ssl_engine_config.c	2008-12-31 13:30:08.000000000 -0500
++++ ./modules/ssl/ssl_engine_config.c	2008-12-31 13:31:51.000000000 -0500
+@@ -133,6 +133,7 @@
+     mctx->ocsp_verify_flags   = 0;
+     mctx->ocsp_certs_file     = NULL;
+     mctx->ocsp_certs          = NULL;
++    mctx->ocsp_no_verify      = FALSE;
+ }
+ 
+ static void modssl_ctx_init_proxy(SSLSrvConfigRec *sc,
+@@ -226,6 +227,7 @@
+     cfgMergeBool(ocsp_force_default);
+     cfgMerge(ocsp_responder, NULL);
+     cfgMerge(ocsp_certs_file, NULL);
++    cfgMergeBool(ocsp_no_verify);
+ }
+ 
+ static void modssl_ctx_cfg_merge_proxy(modssl_ctx_t *base,
+@@ -1466,6 +1468,15 @@
+     return NULL;
+ }
+ 
++const char *ssl_cmd_SSLOCSPResponderNoCertVerify(cmd_parms *cmd, void *dcfg, int flag)
++{   
++    SSLSrvConfigRec *sc = mySrvConfig(cmd->server);
++
++    sc->server->ocsp_no_verify = flag ? TRUE : FALSE;
++
++    return NULL;
++}
++	        
+ void ssl_hook_ConfigTest(apr_pool_t *pconf, server_rec *s)
+ {
+     if (!ap_exists_config_define("DUMP_CERTS")) {
+diff -u -r ../=httpd-2.2.11/modules/ssl/ssl_engine_ocsp.c ./modules/ssl/ssl_engine_ocsp.c
+--- ../=httpd-2.2.11/modules/ssl/ssl_engine_ocsp.c	2008-12-31 13:30:08.000000000 -0500
++++ ./modules/ssl/ssl_engine_ocsp.c	2008-12-31 13:34:46.000000000 -0500
+@@ -189,7 +189,12 @@
+             ssl_log_ssl_error(APLOG_MARK, APLOG_ERR, s);
+             ap_log_error(APLOG_MARK, APLOG_ERR, 0, s,
+ 			 "failed to verify the OCSP response");
+-            rc = V_OCSP_CERTSTATUS_UNKNOWN;
++	    if (sc->server->ocsp_no_verify) {
++                ap_log_cerror(APLOG_MARK, APLOG_DEBUG, 0, c,
++                      "OCSP responder cert verification skipped");
++            } else {
++                rc = V_OCSP_CERTSTATUS_UNKNOWN;
++            }
+         }
+     }
+     
+diff -u -r ../=httpd-2.2.11/modules/ssl/ssl_private.h ./modules/ssl/ssl_private.h
+--- ../=httpd-2.2.11/modules/ssl/ssl_private.h	2008-12-31 13:30:08.000000000 -0500
++++ ./modules/ssl/ssl_private.h	2008-12-31 13:31:51.000000000 -0500
+@@ -441,6 +441,8 @@
+     BOOL ocsp_enabled; /* true if OCSP verification enabled */
+     BOOL ocsp_force_default; /* true if the default responder URL is
+                               * used regardless of per-cert URL */
++    BOOL ocsp_no_verify; /* true if the OCSP responder cert should not be
++                              * checked for validity */
+     const char *ocsp_responder; /* default responder URL */
+     int ocsp_verify_flags; /* Flags to use when verifying OCSP response */
+     const char *ocsp_certs_file; /* OCSP other certificates filename */
+@@ -539,6 +541,7 @@
+ const char *ssl_cmd_SSLOCSPDefaultResponder(cmd_parms *cmd, void *dcfg, const char *arg);
+ const char *ssl_cmd_SSLOCSPResponderCertificateFile(cmd_parms *cmd, void *dcfg, const char *arg);
+ const char *ssl_cmd_SSLOCSPEnable(cmd_parms *cmd, void *dcfg, int flag);
++const char *ssl_cmd_SSLOCSPResponderNoCertVerify(cmd_parms *cmd, void *dcfg, int flag);
+ 
+ /**  module initialization  */
+ int          ssl_init_Module(apr_pool_t *, apr_pool_t *, apr_pool_t *, server_rec *);
+diff -u -r ../=httpd-2.2.11/modules/ssl/mod_ssl.c ./modules/ssl/mod_ssl.c
+--- ../=httpd-2.2.11/modules/ssl/mod_ssl.c	2008-12-31 13:30:08.000000000 -0500
++++ modules/ssl/mod_ssl.c	2008-12-31 14:00:50.000000000 -0500
+@@ -205,6 +205,8 @@
+     SSL_CMD_SRV(OCSPResponderCertificateFile, TAKE1,
+                "Trusted OCSP responder certificates"
+                "(`/path/to/file' - PEM encoded certificates)")
++    SSL_CMD_SRV(OCSPResponderNoCertVerify, FLAG,
++               "Skip verification of responder signing certificate (`on', `off')")
+ 
+     /* Deprecated directives. */
+     AP_INIT_RAW_ARGS("SSLLog", ap_set_deprecated, NULL, OR_ALL,

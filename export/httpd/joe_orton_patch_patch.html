@@ -1,0 +1,41 @@
+--- ./modules/ssl/ssl_engine_kernel.c	2008-03-06 07:40:23.000000000 -0500
++++ ../httpd-2.2.8-works/modules/ssl/ssl_engine_kernel.c	2008-03-05 11:29:06.000000000 -0500
+@@ -1187,7 +1187,8 @@
+         char *sname = X509_NAME_oneline(X509_get_subject_name(cert), NULL, 0);
+         char *iname = X509_NAME_oneline(X509_get_issuer_name(cert),  NULL, 0);
+ 
+-        ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, s,
++        ssl_log_cxerror(APLOG_MARK, APLOG_DEBUG, 0, s,
++		     cert,
+                      "Certificate Verification: "
+                      "depth: %d, subject: %s, issuer: %s",
+                      errdepth,
+--- LAYOUT	2005-11-29 03:56:35.000000000 -0500
++++ ../httpd-2.2.8-works/LAYOUT	2008-03-06 08:58:52.000000000 -0500
+@@ -114,6 +114,7 @@
+     ssl_engine_kernel.c ..... SSL engine kernel
+     ssl_engine_log.c ........ logfile support
+     ssl_engine_mutex.c ...... mutual exclusion support
++    ssl_engine_ocsp.c ....... from patch
+     ssl_engine_pphrase.c .... pass-phrase handling
+     ssl_engine_rand.c ....... PRNG support
+     ssl_engine_vars.c ....... Variable Expansion support
+@@ -130,6 +131,7 @@
+     ssl_scache_shmcb.c ...... session cache via shared memory cyclic buffer
+     ssl_scache_dc.c ......... session cache offloading via 'distcache'
+     ssl_util.c .............. utility functions
++    ssl_util_ocsp.c ......... from patch
+     ssl_util_ssl.c .......... the OpenSSL companion source
+     ssl_util_ssl.h .......... the OpenSSL companion header
+     ssl_util_table.c ........ the hash table library source
+--- ../httpd-2.2.8-works/configure	2008-03-06 13:21:19.000000000 -0500
++++ configure	2008-01-10 11:54:40.000000000 -0500
+@@ -14143,7 +14143,7 @@
+   > $modpath_current/modules.mk
+ 
+ 
+-ssl_objs="mod_ssl.lo ssl_engine_config.lo ssl_engine_dh.lo ssl_engine_init.lo ssl_engine_io.lo ssl_engine_kernel.lo ssl_engine_log.lo ssl_engine_mutex.lo ssl_engine_pphrase.lo ssl_engine_rand.lo ssl_engine_vars.lo ssl_expr.lo ssl_expr_eval.lo ssl_expr_parse.lo ssl_expr_scan.lo ssl_scache.lo ssl_scache_dbm.lo ssl_scache_shmcb.lo ssl_scache_dc.lo ssl_util.lo ssl_util_ssl.lo "
++ssl_objs="mod_ssl.lo ssl_engine_config.lo ssl_engine_dh.lo ssl_engine_init.lo ssl_engine_io.lo ssl_engine_kernel.lo ssl_engine_log.lo ssl_engine_mutex.lo ssl_engine_pphrase.lo ssl_engine_rand.lo ssl_engine_vars.lo ssl_expr.lo ssl_expr_eval.lo ssl_expr_parse.lo ssl_expr_scan.lo ssl_scache.lo ssl_scache_dbm.lo ssl_scache_shmcb.lo ssl_scache_dc.lo ssl_util.lo ssl_util_ssl.lo ssl_engine_ocsp.lo ssl_util_ocsp.lo "
+ 
+   { echo "$as_me:$LINENO: checking whether to enable mod_ssl" >&5
+ echo $ECHO_N "checking whether to enable mod_ssl... $ECHO_C" >&6; }

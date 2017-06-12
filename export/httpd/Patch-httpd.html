@@ -1,0 +1,28 @@
+diff -u -r ./modules/aaa/mod_auth.h ../httpd-2.2.2/modules/aaa/mod_auth.h
+--- ./modules/aaa/mod_auth.h	2006-04-21 21:53:06.000000000 -0400
++++ ../httpd-2.2.2/modules/aaa/mod_auth.h	2006-08-08 14:23:06.000000000 -0400
+@@ -45,7 +45,8 @@
+     AUTH_GRANTED,
+     AUTH_USER_FOUND,
+     AUTH_USER_NOT_FOUND,
+-    AUTH_GENERAL_ERROR
++    AUTH_GENERAL_ERROR,
++    AUTH_UNAVAILABLE
+ } authn_status;
+ 
+ typedef struct {
+diff -u -r ./modules/aaa/mod_auth_basic.c ../httpd-2.2.2/modules/aaa/mod_auth_basic.c
+--- ./modules/aaa/mod_auth_basic.c	2006-04-21 21:53:06.000000000 -0400
++++ ../httpd-2.2.2/modules/aaa/mod_auth_basic.c	2006-08-08 14:22:51.000000000 -0400
+@@ -265,6 +265,11 @@
+                       "user %s not found: %s", sent_user, r->uri);
+             return_code = HTTP_UNAUTHORIZED;
+             break;
++	case AUTH_UNAVAILABLE:
++	    ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
++		      "Authentication service temporarily unavailable");
++	    return_code = HTTP_SERVICE_UNAVAILABLE;
++            break;
+         case AUTH_GENERAL_ERROR:
+         default:
+             /* We'll assume that the module has already said what its error

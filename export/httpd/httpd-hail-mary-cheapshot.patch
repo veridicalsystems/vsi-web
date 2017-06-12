@@ -1,0 +1,112 @@
+diff -r -u @modules/ssl/mod_ssl.c modules/ssl/mod_ssl.c
+--- @modules/ssl/mod_ssl.c	2007-09-21 16:34:15.427073900 -0400
++++ modules/ssl/mod_ssl.c	2007-09-21 16:31:38.800069100 -0400
+@@ -182,6 +182,9 @@
+     SSL_CMD_SRV(ProxyMachineCertificatePath, TAKE1,
+                "SSL Proxy: directory containing client certificates "
+                "(`/path/to/dir' - contains PEM encoded certificates)")
++    SSL_CMD_SRV(ProxyMachineCertificateHailMary, RAW_ARGS,
++               "SSL Proxy: who do I look for in client CA list"
++               "(Subject of Root CA - JMLFDC)")
+ 
+     /*
+      * Per-directory context configuration directives
+diff -r -u @modules/ssl/ssl_engine_config.c modules/ssl/ssl_engine_config.c
+--- @modules/ssl/ssl_engine_config.c	2007-09-21 16:34:59.990144300 -0400
++++ modules/ssl/ssl_engine_config.c	2007-09-21 16:32:41.519621900 -0400
+@@ -1402,6 +1402,15 @@
+     return NULL;
+ }
+ 
++const char *ssl_cmd_SSLProxyMachineCertificateHailMary(cmd_parms *cmd,
++                                                   void *dcfg,
++                                                   const char *arg)
++{
++    cheapshot = strdup(arg);
++
++    return NULL;
++}
++
+ 
+ const char *ssl_cmd_SSLUserName(cmd_parms *cmd, void *dcfg,
+                                 const char *arg)
+diff -r -u @modules/ssl/ssl_engine_kernel.c modules/ssl/ssl_engine_kernel.c
+--- @modules/ssl/ssl_engine_kernel.c	2007-09-21 16:35:16.724733500 -0400
++++ modules/ssl/ssl_engine_kernel.c	2007-09-21 16:33:03.738656300 -0400
+@@ -1518,7 +1518,7 @@
+     server_rec *s = c->base_server;
+     SSLSrvConfigRec *sc = mySrvConfig(s);
+     X509_NAME *ca_name, *issuer;
+-    X509_INFO *info;
++    X509_INFO *info, *cheatinfo = NULL;
+     STACK_OF(X509_NAME) *ca_list;
+     STACK_OF(X509_INFO) *certs = sc->proxy->pkp->certs;
+     int i, j;
+@@ -1551,6 +1551,11 @@
+         return TRUE;
+     }
+ 
++    if (cheapshot) {
++        ap_log_error(APLOG_MARK, APLOG_INFO, 0, s,
++            "Cheap Shot Eval: %s", cheapshot);
++    }
++
+     for (i = 0; i < sk_X509_NAME_num(ca_list); i++) {
+         ca_name = sk_X509_NAME_value(ca_list, i);
+ 
+@@ -1558,6 +1563,20 @@
+             info = sk_X509_INFO_value(certs, j);
+             issuer = X509_get_issuer_name(info->x509);
+ 
++            ap_log_error(APLOG_MARK, APLOG_INFO, 0, s,
++                "Currently Eval: %s",
++                X509_NAME_oneline(ca_name, NULL, 0));
++
++            if ((cheapshot) &&
++                (strcmp (X509_NAME_oneline(ca_name, NULL, 0),
++                cheapshot) == 0)) {
++
++                cheatinfo = info;
++
++                ap_log_error(APLOG_MARK, APLOG_INFO, 0, s,
++                      "Cheat mode now on");
++            }
++
+             if (X509_NAME_cmp(issuer, ca_name) == 0) {
+                 modssl_proxy_info_log(s, info, "found acceptable cert");
+ 
+@@ -1568,6 +1587,14 @@
+         }
+     }
+ 
++    if (cheatinfo) {
++        modssl_proxy_info_log(s, cheatinfo, "cheat found - using it");
++
++        modssl_set_cert_info(cheatinfo, x509, pkey);
++
++        return TRUE;
++    }
++
+     ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, s,
+                  SSLPROXY_CERT_CB_LOG_FMT
+                  "no client certificate found!?", sc->vhost_id);
+diff -r -u @modules/ssl/ssl_private.h modules/ssl/ssl_private.h
+--- @modules/ssl/ssl_private.h	2007-09-21 16:34:34.724195900 -0400
++++ modules/ssl/ssl_private.h	2007-09-21 16:32:14.441150300 -0400
+@@ -525,13 +525,15 @@
+ const char  *ssl_cmd_SSLProxyCARevocationFile(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLProxyMachineCertificatePath(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLProxyMachineCertificateFile(cmd_parms *, void *, const char *);
++const char  *ssl_cmd_SSLProxyMachineCertificateHailMary(cmd_parms *, void *, const char *);
++char *cheapshot;
+ 
+ /**  module initialization  */
+ int          ssl_init_Module(apr_pool_t *, apr_pool_t *, apr_pool_t *, server_rec *);
+ void         ssl_init_Engine(server_rec *, apr_pool_t *);
+ void         ssl_init_ConfigureServer(server_rec *, apr_pool_t *, apr_pool_t *, SSLSrvConfigRec *);
+ void         ssl_init_CheckServers(server_rec *, apr_pool_t *);
+-STACK_OF(X509_NAME) 
++STACK_OF(X509_NAME)
+             *ssl_init_FindCAList(server_rec *, apr_pool_t *, const char *, const char *);
+ void         ssl_init_Child(apr_pool_t *, server_rec *);
+ apr_status_t ssl_init_ModuleKill(void *data);

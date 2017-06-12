@@ -1,0 +1,18 @@
+--- LAYOUT	2005-11-29 03:56:35.000000000 -0500
++++ ../httpd-2.2.8-works/LAYOUT	2008-03-06 08:58:52.000000000 -0500
+@@ -114,6 +114,7 @@
+     ssl_engine_kernel.c ..... SSL engine kernel
+     ssl_engine_log.c ........ logfile support
+     ssl_engine_mutex.c ...... mutual exclusion support
++    ssl_engine_ocsp.c ....... from patch
+     ssl_engine_pphrase.c .... pass-phrase handling
+     ssl_engine_rand.c ....... PRNG support
+     ssl_engine_vars.c ....... Variable Expansion support
+@@ -130,6 +131,7 @@
+     ssl_scache_shmcb.c ...... session cache via shared memory cyclic buffer
+     ssl_scache_dc.c ......... session cache offloading via 'distcache'
+     ssl_util.c .............. utility functions
++    ssl_util_ocsp.c ......... from patch
+     ssl_util_ssl.c .......... the OpenSSL companion source
+     ssl_util_ssl.h .......... the OpenSSL companion header
+     ssl_util_table.c ........ the hash table library source

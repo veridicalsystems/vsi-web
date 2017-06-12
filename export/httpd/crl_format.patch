@@ -1,0 +1,113 @@
+diff -r -u ../@httpd-2.2.11/modules/ssl/mod_ssl.c ./modules/ssl/mod_ssl.c
+--- ../@httpd-2.2.11/modules/ssl/mod_ssl.c	2009-02-17 12:52:20.000000000 -0500
++++ ./modules/ssl/mod_ssl.c	2009-02-17 15:16:05.000000000 -0500
+@@ -129,6 +129,9 @@
+     SSL_CMD_SRV(CARevocationFile, TAKE1,
+                 "SSL CA Certificate Revocation List (CRL) file "
+                 "(`/path/to/file' - PEM encoded)")
++    SSL_CMD_SRV(CARevocationFormat, TAKE1,
++                "SSL CA Certificate Revocation List (CRL) file format "
++                "(`pem', `der')")
+     SSL_CMD_ALL(VerifyClient, TAKE1,
+                 "SSL Client verify type "
+                 "(`none', `optional', `require', `optional_no_ca')")
+diff -r -u ../@httpd-2.2.11/modules/ssl/ssl_engine_config.c ./modules/ssl/ssl_engine_config.c
+--- ../@httpd-2.2.11/modules/ssl/ssl_engine_config.c	2009-02-17 12:52:20.000000000 -0500
++++ ./modules/ssl/ssl_engine_config.c	2009-02-17 15:16:05.000000000 -0500
+@@ -907,6 +907,23 @@
+     return NULL;
+ }
+ 
++const char *ssl_cmd_SSLCARevocationFormat(cmd_parms *cmd, void *dcfg, const char *arg)
++{
++    SSLSrvConfigRec *sc = mySrvConfig(cmd->server);
++
++    if (!strcasecmp(arg, "pem")) {
++        sc->server->crl_x509_filetype = X509_FILETYPE_PEM;
++    }
++    else if (!strcasecmp(arg, "der")) {
++        sc->server->crl_x509_filetype = X509_FILETYPE_ASN1;
++    }
++    else {
++        return "Argument must be PEM or DER";
++    }
++
++    return NULL;
++}
++
+ static const char *ssl_cmd_verify_parse(cmd_parms *parms,
+                                         const char *arg,
+                                         ssl_verify_t *id)
+diff -r -u ../@httpd-2.2.11/modules/ssl/ssl_engine_init.c ./modules/ssl/ssl_engine_init.c
+--- ../@httpd-2.2.11/modules/ssl/ssl_engine_init.c	2009-02-17 12:52:19.000000000 -0500
++++ ./modules/ssl/ssl_engine_init.c	2009-02-17 15:16:05.000000000 -0500
+@@ -610,7 +610,7 @@
+ 
+     mctx->crl =
+         SSL_X509_STORE_create((char *)mctx->crl_file,
+-                              (char *)mctx->crl_path);
++                              (char *)mctx->crl_path,mctx->crl_x509_filetype);
+ 
+     if (!mctx->crl) {
+         ap_log_error(APLOG_MARK, APLOG_ERR, 0, s,
+diff -r -u ../@httpd-2.2.11/modules/ssl/ssl_private.h ./modules/ssl/ssl_private.h
+--- ../@httpd-2.2.11/modules/ssl/ssl_private.h	2009-02-17 12:52:20.000000000 -0500
++++ ./modules/ssl/ssl_private.h	2009-02-17 15:16:05.000000000 -0500
+@@ -434,6 +434,7 @@
+     /** certificate revocation list */
+     const char  *crl_path;
+     const char  *crl_file;
++    BOOL crl_x509_filetype;
+     X509_STORE  *crl;
+ 
+     modssl_auth_ctx_t auth;
+@@ -514,6 +515,7 @@
+ const char  *ssl_cmd_SSLCADNRequestFile(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCARevocationPath(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCARevocationFile(cmd_parms *, void *, const char *);
++const char  *ssl_cmd_SSLCARevocationFormat(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLHonorCipherOrder(cmd_parms *cmd, void *dcfg, int flag);
+ const char  *ssl_cmd_SSLVerifyClient(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLVerifyDepth(cmd_parms *, void *, const char *);
+diff -r -u ../@httpd-2.2.11/modules/ssl/ssl_util_ssl.c ./modules/ssl/ssl_util_ssl.c
+--- ../@httpd-2.2.11/modules/ssl/ssl_util_ssl.c	2006-07-11 23:38:44.000000000 -0400
++++ ./modules/ssl/ssl_util_ssl.c	2009-02-17 15:16:05.000000000 -0500
+@@ -198,7 +198,7 @@
+ **  _________________________________________________________________
+ */
+ 
+-X509_STORE *SSL_X509_STORE_create(char *cpFile, char *cpPath)
++X509_STORE *SSL_X509_STORE_create(char *cpFile, char *cpPath, int x509_filetype)
+ {
+     X509_STORE *pStore;
+     X509_LOOKUP *pLookup;
+@@ -216,7 +216,7 @@
+             X509_STORE_free(pStore);
+             return NULL;
+         }
+-        rv = X509_LOOKUP_load_file(pLookup, cpFile, X509_FILETYPE_PEM);
++        rv = X509_LOOKUP_load_file(pLookup, cpFile, x509_filetype);
+     }
+     if (cpPath != NULL && rv == 1) {
+         pLookup = X509_STORE_add_lookup(pStore, X509_LOOKUP_hash_dir());
+@@ -224,7 +224,7 @@
+             X509_STORE_free(pStore);
+             return NULL;
+         }
+-        rv = X509_LOOKUP_add_dir(pLookup, cpPath, X509_FILETYPE_PEM);
++        rv = X509_LOOKUP_add_dir(pLookup, cpPath, x509_filetype);
+     }
+     return rv == 1 ? pStore : NULL;
+ }
+diff -r -u ../@httpd-2.2.11/modules/ssl/ssl_util_ssl.h ./modules/ssl/ssl_util_ssl.h
+--- ../@httpd-2.2.11/modules/ssl/ssl_util_ssl.h	2007-08-28 09:40:01.000000000 -0400
++++ ./modules/ssl/ssl_util_ssl.h	2009-02-17 15:16:05.000000000 -0500
+@@ -80,7 +80,7 @@
+ X509       *SSL_read_X509(char *, X509 **, modssl_read_bio_cb_fn *);
+ EVP_PKEY   *SSL_read_PrivateKey(char *, EVP_PKEY **, modssl_read_bio_cb_fn *, void *);
+ int         SSL_smart_shutdown(SSL *ssl);
+-X509_STORE *SSL_X509_STORE_create(char *, char *);
++X509_STORE *SSL_X509_STORE_create(char *, char *,int);
+ int         SSL_X509_STORE_lookup(X509_STORE *, int, X509_NAME *, X509_OBJECT *);
+ char       *SSL_make_ciphersuite(apr_pool_t *, SSL *);
+ BOOL        SSL_X509_isSGC(X509 *);

@@ -1,0 +1,96 @@
+diff -u -r ../httpd-2.2.9.orig/modules/ssl/ssl_engine_kernel.c ./modules/ssl/ssl_engine_kernel.c
+--- ../httpd-2.2.9.orig/modules/ssl/ssl_engine_kernel.c	2008-07-07 15:24:46.000000000 -0400
++++ ./modules/ssl/ssl_engine_kernel.c	2008-07-07 15:24:21.000000000 -0400
+@@ -1182,26 +1182,10 @@
+     /*
+      * Log verification information
+      */
+-    if (s->loglevel >= APLOG_DEBUG) {
+-        X509 *cert  = X509_STORE_CTX_get_current_cert(ctx);
+-        char *sname = X509_NAME_oneline(X509_get_subject_name(cert), NULL, 0);
+-        char *iname = X509_NAME_oneline(X509_get_issuer_name(cert),  NULL, 0);
+-
+-        ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, s,
+-                     "Certificate Verification: "
+-                     "depth: %d, subject: %s, issuer: %s",
+-                     errdepth,
+-                     sname ? sname : "-unknown-",
+-                     iname ? iname : "-unknown-");
+-
+-        if (sname) {
+-            modssl_free(sname);
+-        }
+-
+-        if (iname) {
+-            modssl_free(iname);
+-        }
+-    }
++    ssl_log_cxerror(APLOG_MARK, APLOG_DEBUG, 0, conn,
++                    X509_STORE_CTX_get_current_cert(ctx),
++                    "Certificate Verification, depth %d",
++                    errdepth);
+ 
+     /*
+      * Check for optionally acceptable non-verifiable issuer situation
+diff -u -r ../httpd-2.2.9.orig/modules/ssl/ssl_engine_log.c ./modules/ssl/ssl_engine_log.c
+--- ../httpd-2.2.9.orig/modules/ssl/ssl_engine_log.c	2006-07-11 23:38:44.000000000 -0400
++++ ./modules/ssl/ssl_engine_log.c	2008-07-07 15:24:21.000000000 -0400
+@@ -99,3 +99,38 @@
+         }
+     }
+ }
++
++void ssl_log_cxerror(const char *file, int line, int level, 
++                     apr_status_t rv, conn_rec *c, X509 *cert,
++                     const char *format, ...)
++{
++    va_list ap;
++    char buf[HUGE_STRING_LEN];
++    char *sname, *iname;
++    
++    if (c->base_server->loglevel < level) {
++        /* Bail early since the rest of this function is expensive. */
++        return;
++    }
++
++    sname = X509_NAME_oneline(X509_get_subject_name(cert), NULL, 0);
++    iname = X509_NAME_oneline(X509_get_issuer_name(cert),  NULL, 0);
++    
++    va_start(ap, format);
++    apr_vsnprintf(buf, sizeof buf, format, ap);
++    va_end(ap);
++
++    ap_log_cerror(file, line, level, rv, c, 
++                  "%s [peer subject: %s, issuer: %s]",
++                  buf,
++                  sname ? sname : "-unknown-",
++                  iname ? iname : "-unknown-");
++
++    if (sname) {
++        modssl_free(sname);
++    }
++    
++    if (iname) {
++        modssl_free(iname);
++    }
++}
+diff -u -r ../httpd-2.2.9.orig/modules/ssl/ssl_private.h ./modules/ssl/ssl_private.h
+--- ../httpd-2.2.9.orig/modules/ssl/ssl_private.h	2008-07-07 15:24:46.000000000 -0400
++++ ./modules/ssl/ssl_private.h	2008-07-07 15:24:21.000000000 -0400
+@@ -657,6 +657,16 @@
+ void         ssl_die(void);
+ void         ssl_log_ssl_error(const char *, int, int, server_rec *);
+ 
++/* ssl_log_cxerror is a wrapper for ap_log_cerror which takes the peer
++ * certificate as an additional argument and appends details of that
++ * cert to the log message.  All other arguments interpreted exactly
++ * as ap_log_cerror. */
++void ssl_log_cxerror(const char *file, int line, int level, 
++                     apr_status_t rv, conn_rec *c, X509 *cert,
++                     const char *format, ...)
++    __attribute__((format(printf,7,8)));
++
++
+ /**  Variables  */
+ 
+ /* Register variables for the lifetime of the process pool 'p'. */

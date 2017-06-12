@@ -1,0 +1,246 @@
+Xantrex XW 6048 programming
+
+     ENTER + UP + DOWN for advanced mode
+
+from System Status display, enter "menu" -> "XW6048 00" -> "Advanced Settings"
+
+================
+System Settings
+XW6048 00		(XW6048 00: menus)
+XW AGS 00:		(XW AGS 00: menus)
+XW SCP xx:		(XW SCP xx: menus)
+Clock:
+
+================
+XW6048 00: menus
+
+XW6048 00: Setup
+-------------
+Advanced Settings	-------------------------------------->	Inverter Settings	->	XW6048 00: Inv
+Meters								Charger Settings	->	XW6048 00: Chg
+Inverter		[  Disabled]	[  Enabled]		AC Settings		->	XW6048 00: AC
+Search Mode		[  Disabled]	[	  ]		Grid Support		-> 	XW6048 00: Grid
+Grid Support		[  Disabled]	[	  ]		Gen Support		->	XW6048 00: Gen
+Charger			[  Disabled]	[  Enabled]		Aux Settings		->	XW6048 00: Aux
+Force Chg							Copy From Multi Unit Config
+Mode			[ Operating]				Restore Defaults
+Clear Faults Warnings						Adv Features		->	XW6048 00: Adv Features
+View Device Info
+
+XW6048 00: Inv
+-------------
+Low Batt Cut Out	[      46V]	[    45.5V] per Fullriver 45.0V for 5 min is OK
+LBCO Delay		[      10s]	[     300s]
+High Batt Cut Out	[      70V]	[      65V] 
+Search Watts		[      50W]	[	  ]	
+Search Delay		[       2s]	[	  ]
+								
+XW6048 00: Chg							Note: per Schneider, the W48 warning
+-------------							occurs at LBCO + 1.0V
+Batt Type		[  Flooded]	[   Custom]
+Custom Settings		
+	Eqlz Support	[  Enabled]	[ Disabled]
+	Eqlz Voltage	[    64.0V]	[     0.0V]
+	Bulk Voltage	[    57.6V]	[    58.8V]
+	Absorb Voltage	[    57.6V]	[    58.8V] per Fullriver
+	Float Voltage	[    54.0V]	[    54.7V] to get 54.8V at batteries at 77degF/25degC
+	Batt Temp Comp	[ -108mV/C]	[  -96mV/C]
+Batt Capacity		[    440Ah]	[    335Ah]
+Max Chg Rate		[     100%]	[      80%] per Fullriver == 80A, less than 81A allowable
+Charge Cycle		[   2Stage]	[   3Stage]
+Default Batt Temp	[     Warm]	[ 	  ]
+ReCharge Volts		[      50V]	[      47V] temp compensated level at which charge cycle begins
+Absorb Time		[   180min]	[    60min]	Fullriver says 47V is fine, "middle of the range"
+ChgBlockStart		[     0:00]	[	  ]
+ChgBlockStop		[     0:00]	[	  ]
+
+XW6048 00: AC
+-------------
+AC Priority		[      AC1]	[      AC2]
+AC1 Breaker		[      60A]	[      50A] charging current limited to 80% == 40A
+AC1 Lo Volt		[     106V]	[	  ]
+AC1 Hi Volt		[     132V]	[	  ]
+AC1 Lo Freq		[     55Hz]	[	  ]
+AC1 Hi Freq		[     65Hz]	[	  ]
+AC2 Breaker		[      60A]	[      26A] charging current limited to 80%
+AC2 Lo Volt		[      80V]	[	  ]	set to 35A for net 6720W
+AC2 Hi Volt		[     138V]	[	  ]	or 30A for net 5760W
+AC2 Lo Freq		[     55Hz]	[	  ]	or 26A for net 5000W
+AC2 Hi Freq		[     65Hz]	[	  ]
+
+XW6048 00: Grid
+-------------
+Grid Supp Volts		[      53V]	[    54.8V] set to same as Float Voltage
+Sell			[ Disabled]	[	  ] 	(or slightly higher)
+Max Sell Amps		[    27.0A]	[     0.0A] per Sandra
+Load Shave		[ Disabled]	[	  ]
+Load Shave Amps		[    40.0A]	[	  ]
+LoadShaveStart		[     0:00]	[	  ]
+LoadShaveStop		[     0:00]	[	  ]
+
+XW6048 00: Gen
+-------------
+GenSupp Mode		[ Disabled]	[  Enabled]
+GenSupp Amps		[    20.8A]	[         ] won't go over 80% of AC2 Breaker which is actual
+						    	max draw from the generator
+XW6048 00: Aux						inverter supports generator when load exceeds
+-------------						GenSupp Amps for 1-2 seconds, until load drops
+Manual Aux		[ManualOff]	[Automatic]	by 2A+10%, i.e. 16.8A or 4KW
+Active Lvl		[ActiveHigh]	[	  ]
+Trig Src		[ LowBattV]	[	  ]
+Trigger Level		[    44.0V]	[    46.7V] keep above AGS: Start DCV 15min/2 hr
+Trigger Delay		[     1sec]	[    60sec] don't delay, generator should have started already...
+Clear Level		[    48.0V]	[	  ] 
+Clear Delay		[     1sec]	[    10sec] avoid transient conditions
+
+	If the battery battery voltage slowly drifts down then the generator will start before it drops
+	to the LoWBattV trigger. If the batteries are being slammed or the generator hasn't started then
+	we don't want to abuse the batteries, so kill the Desirable Loads Panel (DLP) quickly. It stays
+	off until the batteries are more or less recovered.
+
+XW6048 00: Multi
+-------------
+(do not enter -- will kill power)
+
+XW6048 00: Adv Features
+-------------
+RPO			[ Disabled]	[	  ]
+Power Save		[ Disabled]	[	  ]
+Sell Dly 40s		[ Disabled]	[	  ]
+GenSupp Plus		[ Disabled]	[	  ] enable only for generators under 5kW
+
+--------
+
+================
+XW AGS 00: menus
+
+from System Status display, enter "menu" -> "XW AGS 00" -> "Advanced Settings"
+
+XW AGS 00: Setup
+-------------
+Advanced Settings
+GenMode			[ManualOff]	[Automatic]
+Mode			[Operating]	[	  ]	Put in Standby to disable manual or automatic
+Clear Faults Warnings					generator starting
+View Device Info
+
+XW AGS 00: Setup
+-------------
+Advanced Settings
+GenMode			[ManualOff]
+
+XW AGS 00: Config
+-------------
+QT 			[  Enabled]	[ Disabled]	
+QT Begin		[    21:00]	[	  ]
+QT End			[     8:00]	[	  ]
+Gen Type		[        2]	[	14]	Type 14 is "Run with..." using Relay 1 (14-16) only
+Cfg Trigger		(XW AGS 00: Triggers)		(p2-23,p3-10)
+Cfg Gen			(XW AGS 00: Gen)		Relay 1, Run/Stop(Ignition) (14-16) is used
+Multi-Unit Config	(do not enter)			Relay 2, Start(Cranking) (17-18) is not used
+Restore Defaults					Relay 3, Preheat(Glow) (19-20) is not used
+							
+XW AGS 00: Triggers
+-------------
+Start DCV 30 Sec	[    44.5V]	[    46.4V] (can't disable)			see
+Start DCV 15 Min	[ Disabled]	[    46.8V] should be higher than LBCO		README.voltlog
+Start DCV 2 hr		[ Disabled]	[    47.2V] 	and Aux: Trigger Level
+Start DCV 24 hr		[ Disabled]	[    48.0V]
+Stop Float		[ Disabled]	[  Enabled]			48.0 24hr   gen start in 24 hours
+Stop Absorb		[  Enabled]	[ Disabled]			47.2 2hr    gen start in 126 min
+StopV			[ Disabled]	[    60.0V] just in case	46.8 15min  gen start in 21 min
+Temp1			[ Disabled]	[	  ]			46.7 60sec  DLP cutout in 1 min
+Temp2			[ Disabled]	[	  ]			46.4 30sec  gen start in 6.5 min 
+Load			[ Disabled]	[  Enabled] 
+Strt Load		[    10.0A]	[         ] five minute duration (2400W)
+Stop Load		[     7.0A]	[         ] one minute duration (1680W)
+*AC Current Trigger
+	Start Delay	[   5.0min]	[         ] 5min delay + ~6min startup means 11min for generator power
+*AC Current Trigger
+	Stop Delay	[   1.0min]
+
+	Note from empirical measurements the 75% state-of-charge level corresponds to about 47.8V @ ~1500W
+
+XW AGS 00: Gen
+-------------
+Starter Cool Down	[     1sec]	[	  ]
+Gen Cool Down		[    30sec]	[         ] Leave 30s in case of manual start from panel
+Gen Spin Down		[   600sec]	[   540sec] Inova board does 360 sec cool down...
+Max Runtime		[   8hours]	[   0hours]
+Exercise per		[   21days]	[	  ]		Inova options for
+Exercise Dur		[   30 min]	[	  ]		warm-up / cool-down
+Exercise Time		[     9:00]	[	  ]		  300s	    600s
+Relay 3			[  NotUsed]	[	  ]		->300s      360s
+Gen Run Hold Time	[     0.0s]	[	  ]		   60s      360s
+Crank Delay		[     0sec]	[         ]		   60s      120s
+Crank Time		[     0sec]	[         ]
+Crank Retry Time	[     0sec]	[         ] 
+Preheat Time		[     0sec]	[         ]
+Gen Start Tries		[        1]	[	  ] 
+
+	Per Schneider Type 8 is NFG, it needs AC2 soonest
+	Exercise time interval starts from last time generator was run for any reason
+
+================
+XW SCP xx: menus
+
+XW SCP xx: Setup		# xx == "up", "bsmt"
+-------------
+Brightness		[      60%]	[      80%]
+Contrast		[      60%]	[      80%]
+Light Timer		[    2mins]	[         ]
+Button Beep		[      Off]	[       On]
+Fault Alarm		[      Off]	[       On]
+LowBatt Alarm		[      Off]  	[       On]
+Set Degrees		[Fahrenheit]	[         ]
+Name			[         ]	[XW SCP xx]
+*Periodic Transmit Enable
+*Identify Enable
+
+							
+================
+Device Info
+
+XW6048 00
+Model #		865-1000
+Serial #	00001473DCC7
+F/W Rev.	1.07.00 BN 3
+
+XW SCP up
+Model #		865-1050
+Serial #	00001482AA29
+F/W Rev.	1.06.00 BN 19		# upgraded 2014-08-09 from 1.05.00 BN 1
+
+XW SCP bsmt
+Model #		865-1050
+Serial #	000016AB6D7E
+F/W Rev.	1.06.00 BN 19
+
+XW AGS 00
+Model #		865-1060-01
+Serial #	000016B753C2
+F/W Rev.	3.00.00 BN 2
+
+Combox
+Model #		865-1058		MAC 00:00:54:fe:07:bb
+Serial #	B12884021		IP  192.168.111.116
+F/W Rev.	(see README.Conbox)
+
+## defective unit returned 2014-09-12
+##XW AGS 00
+##Model #		865-1060
+##Serial #	0000140919B1
+##F/W Rev.	2.07.00 BN 2		# upgraded 2014-08-11 from 2.06.00 BN 12
+
+
+================
+Xanbus wiring	# == RS485 120ohm terminator
+		Cat5e, minimum cable length 6.5', max total network length 131'
+		Documentation says use T568A termination but Xantrex tech support confirmed
+		that consistent use of T568B is fine (that is the in-house standard)
+
+	[SCP bmst]	[AGS     ]	[XW  6048]	[Combox  ]	[SCP up  ]
+            #\______7'______/\______13'_____/\______7'______/\______49'_____/#
+
+
+/mnt/nfs/local/docs/House/PV/Xantrex/xantrex.txt
